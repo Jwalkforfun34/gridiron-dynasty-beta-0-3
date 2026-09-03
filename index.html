@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>Gridiron Dynasty Beta 0.3</title>
+<meta name="theme-color" content="#0f1115" />
+<meta name="color-scheme" content="dark" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Gridiron Dynasty" />
+<meta name="mobile-web-app-capable" content="yes" />
+<link rel="manifest" href="manifest.webmanifest" />
+<meta name="format-detection" content="telephone=no" />
+
+<style>
+  :root{--bg:#0f1115;--panel:#17191d;--card:#202329;--card2:#262a31;--text:#f3f4f6;--muted:#a8adb7;--border:#343840;--accent:#7dd3fc;--accentbg:#123b4c;--good:#22c55e;--warn:#f59e0b;--bad:#ef4444;--purple:#a78bfa;--teal:#14b8a6}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.35}
+  button,select,input{font:inherit}
+  button{touch-action:manipulation}
+  .app{max-width:1100px;margin:0 auto;padding:12px 14px 28px}
+  .topbar{display:grid;grid-template-columns:auto auto minmax(0,1fr);align-items:center;gap:10px;position:sticky;top:0;z-index:20;background:rgba(15,17,21,.96);backdrop-filter:blur(10px);padding:8px 0 10px;border-bottom:1px solid var(--border)}
+  .hamburger,.iconbtn{width:46px;height:46px;border-radius:12px;border:1px solid var(--border);background:var(--card);color:var(--text);display:grid;place-items:center;cursor:pointer}
+  .hamburger span,.hamburger:before,.hamburger:after{content:"";display:block;width:20px;height:2px;background:currentColor;border-radius:2px}
+  .hamburger{gap:4px}
+  .logo{width:46px;height:46px;border-radius:12px;border:1px solid var(--border);display:grid;place-items:center;background:var(--card);font-weight:900;letter-spacing:.08em;font-size:14px}
+  .teamname{font-size:1.05rem;font-weight:850;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .subline{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+  .pill{border:1px solid var(--border);border-radius:999px;padding:4px 8px;color:var(--muted);font-size:.77rem;background:var(--card)}
+  .panel{display:none;padding-top:14px}.panel.active{display:block}
+  .grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:12px}
+  .span-4{grid-column:span 4}.span-5{grid-column:span 5}.span-6{grid-column:span 6}.span-7{grid-column:span 7}.span-8{grid-column:span 8}.span-12{grid-column:span 12}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px;min-width:0}
+  h2,h3{margin:0 0 10px} h2{font-size:1.02rem} h3{font-size:.92rem}
+  .muted{color:var(--muted)}.small{font-size:.83rem}.tiny{font-size:.75rem}
+  .kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+  .kpi{padding:10px;border-radius:10px;background:var(--panel);border:1px solid var(--border);min-width:0}.kpi b{display:block;font-size:1.06rem;margin-top:2px;overflow-wrap:anywhere}
+  .bar{height:8px;background:#111318;border:1px solid var(--border);border-radius:999px;overflow:hidden;margin-top:8px}.bar>span{display:block;height:100%;background:var(--good);transition:width .2s ease}
+  .btn{min-height:44px;border:1px solid var(--border);background:var(--panel);color:var(--text);border-radius:10px;padding:10px 13px;cursor:pointer}.btn.primary{background:var(--accentbg);border-color:var(--accent)}.btn.warn{border-color:var(--warn)}.btn.bad{border-color:var(--bad)}.btn:disabled{opacity:.45;cursor:not-allowed}
+  .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+  label{display:block;font-size:.82rem;color:var(--muted);margin-bottom:6px} select{width:100%;min-height:44px;border:1px solid var(--border);border-radius:10px;background:var(--panel);color:var(--text);padding:9px 10px}
+  table{width:100%;border-collapse:collapse;font-size:.84rem}th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--border);vertical-align:middle}th{color:var(--muted);font-weight:650}.tablewrap{overflow-x:auto}
+  .avatar{width:34px;height:34px;position:relative;display:inline-block;vertical-align:middle;margin-right:8px;flex:0 0 auto}.avatar:before{content:"";position:absolute;left:10px;top:2px;width:14px;height:14px;border-radius:50%;background:#d8dbe1}.avatar:after{content:"";position:absolute;left:5px;bottom:1px;width:24px;height:15px;border-radius:12px 12px 5px 5px;background:#d8dbe1}
+  .playerbtn{display:flex;align-items:center;min-width:190px;background:none;border:0;color:var(--text);padding:0;text-align:left;cursor:pointer}.playerbtn:hover b{text-decoration:underline}.ovr{font-weight:850}.good{color:var(--good)}.warntext{color:var(--warn)}.badtext{color:var(--bad)}
+  .news{display:grid;gap:8px}.newsitem{padding:10px;border:1px solid var(--border);border-radius:10px;background:var(--panel)}
+  .callout{padding:10px 12px;border-left:3px solid var(--warn);background:var(--panel);border-radius:8px;margin-top:10px}.callout.goodline{border-left-color:var(--good)}.callout.badline{border-left-color:var(--bad)}
+  .scorebox{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:center;text-align:center;padding:12px;border:1px solid var(--border);border-radius:12px;background:var(--panel)}.score{font-size:2rem;font-weight:900;min-width:48px}.result{font-size:.82rem;font-weight:800;letter-spacing:.08em}
+  .facility{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:start}.levels{display:flex;gap:4px;margin:8px 0}.leveldot{width:20px;height:7px;border-radius:99px;background:var(--border)}.leveldot.on{background:var(--good)}
+  .switchrow{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)}.switchrow:last-child{border-bottom:0}input[type="checkbox"]{width:22px;height:22px;accent-color:var(--accent)}
+  .coach{display:grid;grid-template-columns:46px 1fr;gap:10px;align-items:center}.portrait{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:var(--panel);border:1px solid var(--border);font-weight:800}
+  .meterrow{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:end}
+  .project{padding:12px;border:1px solid var(--warn);border-radius:12px;background:var(--panel)}
+  .menu-backdrop{position:fixed;left:0;right:0;top:0;bottom:0;background:rgba(0,0,0,.58);z-index:999;display:none;touch-action:none}
+  .menu-backdrop.open{display:block}
+  .drawer{position:fixed;left:0;top:0;bottom:0;width:86%;max-width:330px;background:#15171b;border-right:1px solid var(--border);padding:calc(16px + env(safe-area-inset-top)) 16px calc(16px + env(safe-area-inset-bottom));box-shadow:12px 0 40px rgba(0,0,0,.35);overflow-y:auto;-webkit-overflow-scrolling:touch;touch-action:pan-y}
+  .drawerhead{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px}.drawer nav{display:grid;gap:6px}.drawer nav button{min-height:48px;text-align:left;border:1px solid transparent;background:transparent;color:var(--text);border-radius:10px;padding:10px 12px;cursor:pointer}.drawer nav button[aria-current="page"]{background:var(--accentbg);border-color:var(--accent)}.menu-section{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin:14px 8px 6px}
+  .player-modal-backdrop{position:fixed;left:0;right:0;top:0;bottom:0;z-index:1100;background:rgba(0,0,0,.68);display:none;padding:calc(12px + env(safe-area-inset-top)) 10px calc(12px + env(safe-area-inset-bottom));overflow-y:auto;-webkit-overflow-scrolling:touch}.player-modal-backdrop.open{display:block}.player-modal{width:100%;max-width:720px;max-height:calc(100% - 8px);margin:0 auto;border:1px solid var(--border);border-radius:16px;background:#17191d;color:var(--text);box-shadow:0 24px 80px rgba(0,0,0,.55);overflow:auto;-webkit-overflow-scrolling:touch}.dialogbody{padding:14px}.dialogtop{display:flex;justify-content:space-between;gap:10px;align-items:start;border-bottom:1px solid var(--border);padding:14px;position:sticky;top:0;background:#17191d;z-index:2}.dialogtabs{display:flex;gap:6px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:10px 14px;border-bottom:1px solid var(--border);position:sticky;top:74px;background:#17191d;z-index:1}.dialogtabs button{min-height:40px;border:1px solid var(--border);background:var(--panel);color:var(--muted);border-radius:9px;padding:8px 10px;white-space:nowrap}.dialogtabs button.active{border-color:var(--accent);color:var(--text);background:var(--accentbg)}.spark{display:flex;align-items:flex-end;gap:4px;height:70px;padding:8px 0}.spark span{flex:1;min-width:8px;border-radius:3px 3px 0 0;background:var(--teal);opacity:.85}
+  .star{color:#facc15;letter-spacing:1px}.unknown{color:var(--muted)}
+  .leaders{display:grid;gap:8px}.leader{display:grid;grid-template-columns:auto 1fr auto;gap:8px;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)}
+  .progress-note{padding:8px 10px;border-radius:9px;background:var(--panel);border:1px solid var(--border);margin-top:8px}
+  .footer{margin-top:14px;color:var(--muted);font-size:.76rem;text-align:center}
+  @media(max-width:760px){.app{padding:8px 10px 24px}.span-4,.span-5,.span-6,.span-7,.span-8{grid-column:span 12}.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.hide-mobile{display:none}.topbar{grid-template-columns:auto auto minmax(0,1fr)}table{font-size:.8rem}}
+  @media(max-width:420px){.kpis{grid-template-columns:1fr 1fr}.teamname{font-size:.96rem}.pill{font-size:.7rem}.card{padding:12px}.drawer{width:90vw}}
+
+  /* Apple / iPhone / iPad web-app support */
+  html{-webkit-text-size-adjust:100%;background:var(--bg)}
+  body{-webkit-tap-highlight-color:transparent;overscroll-behavior-y:none}
+  .app{padding-left:max(14px,env(safe-area-inset-left));padding-right:max(14px,env(safe-area-inset-right));padding-bottom:max(28px,env(safe-area-inset-bottom))}
+  .topbar{padding-top:max(8px,env(safe-area-inset-top))}
+  @supports (-webkit-touch-callout:none){
+    .drawer{padding-bottom:max(16px,env(safe-area-inset-bottom))}
+  }
+
+  body.nav-open,body.modal-open{overflow:hidden}
+  .hamburger,.iconbtn,.btn,.drawer nav button,.dialogtabs button{min-width:44px;min-height:44px}
+  select,input,button{font-size:16px}
+  @media(max-width:420px){.player-modal-backdrop{padding-left:6px;padding-right:6px}.player-modal{border-radius:14px}.dialogtabs{top:74px}}
+
+  .prospect{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);align-items:center}.prospect:last-child{border-bottom:0}.prospect-main{min-width:0}.prospect-meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:5px}.draft-order-row{display:grid;grid-template-columns:34px minmax(0,1fr);gap:8px;padding:7px 0;border-bottom:1px solid var(--border)}.draft-order-row.onclock{background:rgba(125,211,252,.08);border-radius:8px;padding:7px 8px}.draft-order-row.done{opacity:.62}.draftlog{max-height:220px;overflow:auto;border-top:1px solid var(--border);margin-top:8px;padding-top:8px}.trade-target{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);align-items:center}.asset-list{display:grid;gap:7px;margin:10px 0}.assetcheck{display:flex;align-items:center;gap:9px;padding:8px;border:1px solid var(--border);border-radius:9px;background:var(--panel)}.assetcheck input{width:20px;height:20px}.interest{height:8px;background:var(--border);border-radius:99px;overflow:hidden;margin-top:7px}.interest span{display:block;height:100%;background:var(--warn)}.rookie{outline:1px solid rgba(125,211,252,.22)}
+</style>
+</head>
+<body>
+<div id="gd" class="app">
+  <header class="topbar">
+    <button class="hamburger" id="menu-open" type="button" aria-label="Open navigation"><span></span></button>
+    <div class="logo" aria-hidden="true">CCS</div>
+    <div style="min-width:0">
+      <div class="teamname">Capital City Sentinels</div>
+      <div class="subline"><span class="pill" id="season-pill">Season 2026 · Week 1</span><span class="pill" id="record-pill">0-0</span><span class="pill">Beta 0.3</span></div>
+    </div>
+  </header>
+
+  <div class="menu-backdrop" id="menu-backdrop" aria-hidden="true">
+    <aside class="drawer" aria-label="Navigation">
+      <div class="drawerhead"><div><b>Gridiron Dynasty</b><div class="muted tiny">Pro Franchise Beta 0.3</div></div><button type="button" class="iconbtn" id="menu-close" aria-label="Close navigation">×</button></div>
+      <div class="menu-section">Franchise</div>
+      <nav>
+        <button type="button" data-tab="home" aria-current="page">🏠 Home</button>
+        <button type="button" data-tab="gameday">🏈 Game Day</button>
+        <button type="button" data-tab="roster">👥 Roster & Stats</button>
+        <button type="button" data-tab="scouting">🔎 Scouting</button>
+        <button type="button" data-tab="draft">📋 Draft & Trades</button>
+        <button type="button" data-tab="facilities">🏗️ Facilities</button>
+        <button type="button" data-tab="management">⚙️ Management</button>
+        <button type="button" data-tab="league">🏆 League</button>
+      </nav>
+      <div class="menu-section">Coming later</div>
+      <div class="muted small" style="padding:0 8px">Draft room and trade logic are targeted for Beta 0.3.</div>
+    </aside>
+  </div>
+
+  <main>
+    <section class="panel active" data-panel="home">
+      <div class="grid">
+        <div class="card span-7">
+          <h2>Franchise Snapshot</h2>
+          <div class="kpis">
+            <div class="kpi"><span class="muted small">Cash reserve</span><b id="cash-kpi">$28.5M</b></div>
+            <div class="kpi"><span class="muted small">Fan approval</span><b id="fans-kpi">63%</b></div>
+            <div class="kpi"><span class="muted small">Team OVR</span><b id="ovr-kpi">--</b></div>
+            <div class="kpi"><span class="muted small">Weekly payroll</span><b id="payroll-kpi">--</b></div>
+          </div>
+          <div style="margin-top:12px"><div class="small muted">Fan momentum</div><div class="bar"><span id="fan-bar" style="width:63%"></span></div></div>
+          <div id="financial-warning" class="callout" style="display:none"></div>
+        </div>
+        <div class="card span-5">
+          <h2>Next Game</h2><div id="next-opponent"></div>
+          <div class="actions"><button type="button" class="btn primary" id="home-quick-sim">Quick Sim Week</button><button type="button" class="btn" id="home-gameday">Game Day</button><button type="button" class="btn" id="home-scout">Scout Opponent</button></div><div id="quick-sim-note" class="muted tiny" style="margin-top:8px">Quick Sim uses your currently saved offensive and defensive game plans.</div>
+        </div>
+        <div class="card span-7">
+          <h2>Football Evolution Engine</h2>
+          <div id="adaptation-summary" class="small"></div><div class="bar"><span id="adaptation-bar" style="width:0%;background:var(--warn)"></span></div>
+          <div id="adaptation-callout" class="callout"></div>
+        </div>
+        <div class="card span-5">
+          <h2>Construction</h2><div id="home-project"></div>
+        </div>
+        <div class="card span-12">
+          <h2>Staff Inbox</h2><div id="news-list" class="news"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" data-panel="gameday">
+      <div class="grid">
+        <div class="card span-6"><h2>Offensive Game Plan</h2><label for="off-plan">Primary identity</label><select id="off-plan"><option value="balanced">Balanced</option><option value="run">Run Heavy</option><option value="short">Quick / Short Pass</option><option value="pass">Pass Heavy</option><option value="vertical">Vertical Attack</option></select><div id="gameplan-note" class="callout"></div></div>
+        <div class="card span-6"><h2>Defensive Game Plan</h2><label for="def-plan">Primary approach</label><select id="def-plan"><option value="balanced">Balanced</option><option value="contain">Keep Everything in Front</option><option value="runstop">Sell Out vs Run</option><option value="blitz">Pressure / Blitz Heavy</option></select><div class="muted small" style="margin-top:10px">Your coordinators use this as the weekly emphasis. Full play calling comes later.</div></div>
+        <div class="card span-7"><h2>Opponent Scouting Report</h2><div id="opponent-scout"></div><div class="actions"><button type="button" class="btn" id="gameday-scout">Assign Extra Scouting</button></div></div>
+        <div class="card span-5"><h2>Kickoff</h2><div class="muted small">This beta still uses full-game simulation so we can focus on the management systems first.</div><div class="actions"><button type="button" class="btn primary" id="sim-game">Simulate Week 1</button></div></div>
+        <div class="card span-12" id="game-result-card" style="display:none"><h2>Final</h2><div class="scorebox"><div><b>CCS</b><div class="score" id="final-score-us">0</div></div><div><div id="final-result" class="result">—</div><div class="muted tiny" id="final-opponent">Opponent</div></div><div><b id="final-opp-abbr">OPP</b><div class="score" id="final-score-them">0</div></div></div><div class="kpis" style="margin-top:10px"><div class="kpi"><span class="muted small">Total yards</span><b id="stat-yards">0</b></div><div class="kpi"><span class="muted small">Rush yards</span><b id="stat-rush">0</b></div><div class="kpi"><span class="muted small">Pass yards</span><b id="stat-pass">0</b></div><div class="kpi"><span class="muted small">Game profit</span><b id="stat-profit">$0</b></div></div></div>
+      </div>
+    </section>
+
+    <section class="panel" data-panel="roster">
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;gap:10px;align-items:end;flex-wrap:wrap"><div><h2>Roster & Season Stats</h2><div class="muted small">Tap a player to open season stats, career totals, game log, and development information.</div></div><div style="min-width:180px"><label for="pos-filter">Position group</label><select id="pos-filter"><option value="ALL">All</option><option value="OFF">Offense</option><option value="DEF">Defense</option><option value="ST">Special Teams</option></select></div></div>
+        <div class="tablewrap" style="margin-top:10px"><table><thead><tr><th>Player</th><th>Pos</th><th>OVR</th><th>Age</th><th>Potential</th><th>Season</th></tr></thead><tbody id="roster-body"></tbody></table></div>
+      </div>
+    </section>
+
+    <section class="panel" data-panel="scouting">
+      <div class="grid">
+        <div class="card span-7"><h2>Current Opponent</h2><div id="scout-main"></div><div class="actions"><button type="button" class="btn primary" id="scout-focus">Assign Extra Scouting · $0.15M</button></div></div>
+        <div class="card span-5"><h2>Scouting Department</h2><div id="scout-dept"></div></div>
+        <div class="card span-12"><h2>League Intel Board</h2><div class="tablewrap"><table><thead><tr><th>Team</th><th>Intel confidence</th><th>What you know</th></tr></thead><tbody id="intel-body"></tbody></table></div></div>
+      </div>
+    </section>
+
+
+    <section class="panel" data-panel="draft">
+      <div class="grid">
+        <div class="card span-12">
+          <div class="meterrow"><div><h2>Draft Room</h2><div class="muted small" id="draft-status">The draft room is tracking the class throughout the season.</div></div><span class="pill" id="draft-year">2027 Draft</span></div>
+          <div class="actions" id="draft-controls"></div>
+        </div>
+        <div class="card span-7">
+          <h2>Big Board · 10 Prospects</h2>
+          <div class="muted small" style="margin-bottom:10px">Ratings and ceilings are scouting estimates. Better scouting narrows the miss without making the draft perfectly predictable.</div>
+          <div id="draft-board"></div>
+        </div>
+        <div class="card span-5">
+          <h2>Order & League Activity</h2>
+          <div id="draft-order"></div>
+          <div id="draft-trade-offer" style="margin-top:10px"></div>
+          <div id="draft-log" style="margin-top:10px"></div>
+        </div>
+        <div class="card span-12">
+          <h2>Trade Center · Every Player Has a Price</h2>
+          <div class="muted small">First-pass trade engine: age, position, overall, upside, salary and the selling team's competitive window all affect value. There are no artificial “untouchable” players.</div>
+          <div class="grid" style="margin-top:12px">
+            <div class="span-7" id="trade-market"></div>
+            <div class="span-5" id="trade-builder"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" data-panel="facilities">
+      <div class="grid"><div class="card span-12"><h2>Active Construction Project</h2><div id="project-status"></div><div class="muted small" style="margin-top:8px">Upgrades now take real time. The stadium can remain open during work, but active stadium construction temporarily reduces usable capacity.</div></div></div>
+      <div class="grid" id="facility-grid" style="margin-top:12px"></div>
+    </section>
+
+    <section class="panel" data-panel="management">
+      <div class="grid">
+        <div class="card span-6"><h2>Delegate What You Don't Want</h2><div class="switchrow"><div><b>Scouting</b><div class="muted small">Staff adds background intel each week.</div></div><input id="auto-scout" type="checkbox" checked aria-label="Automate scouting"></div><div class="switchrow"><div><b>Contracts</b><div class="muted small">Front office can negotiate for you later.</div></div><input id="auto-contracts" type="checkbox" checked aria-label="Automate contracts"></div><div class="switchrow"><div><b>Depth Chart</b><div class="muted small">Coaches set starters automatically.</div></div><input id="auto-depth" type="checkbox" checked aria-label="Automate depth chart"></div><div class="switchrow"><div><b>Ticket Pricing</b><div class="muted small">Business staff balances price and attendance.</div></div><input id="auto-tickets" type="checkbox" checked aria-label="Automate ticket pricing"></div></div>
+        <div class="card span-6"><h2>Information Settings</h2><div class="switchrow"><div><b>Show Exact Potential</b><div class="muted small">Off by default. When off, potential appears as broad 1–5 star ranges.</div></div><input id="exact-potential" type="checkbox" aria-label="Show exact potential"></div><div class="callout">Default mode intentionally hides exact ceilings. A five-star label means roughly 90–99 potential, not a guaranteed final rating.</div></div>
+        <div class="card span-4"><div class="coach"><div class="portrait">MH</div><div><b>Marcus Hale</b><div class="muted small">Head Coach · Age 38</div></div></div><div class="small" style="margin-top:10px">Receptive to new ideas, steady with media, values adaptability.</div></div>
+        <div class="card span-4"><div class="coach"><div class="portrait">EN</div><div><b>Eli Navarro</b><div class="muted small">Offensive Coordinator · Age 31</div></div></div><div class="small" style="margin-top:10px">Creative, impatient, loves explosive passes and fourth-down aggression.</div></div>
+        <div class="card span-4"><div class="coach"><div class="portrait">RM</div><div><b>Roy Mercer</b><div class="muted small">Defensive Coordinator · Age 58</div></div></div><div class="small" style="margin-top:10px">Stubborn, blunt with media, respected because his defenses usually work.</div></div>
+        <div class="card span-12"><h2>Beta Save</h2><div class="muted small">Universal hosted Beta 0.3 build for Safari, Chrome, Android, iPhone, iPad, and desktop. Saves are stored locally in this browser.</div><div class="actions"><button type="button" class="btn bad" id="reset-save">Reset Franchise</button></div></div>
+      </div>
+    </section>
+
+    <section class="panel" data-panel="league">
+      <div class="grid">
+        <div class="card span-6"><h2>Standings</h2><div class="tablewrap"><table><thead><tr><th>Team</th><th>W</th><th>L</th><th>OVR</th></tr></thead><tbody id="standings-body"></tbody></table></div></div>
+        <div class="card span-6"><h2>Sentinels Schedule</h2><div class="muted tiny" style="margin-bottom:8px">Short 8-game test schedule for faster beta seasons.</div><div class="tablewrap"><table><thead><tr><th>Week</th><th>Opponent</th><th>Result</th></tr></thead><tbody id="schedule-body"></tbody></table></div></div>
+        <div class="card span-12"><h2>Team Leaders</h2><div id="team-leaders" class="leaders"></div></div>
+        <div class="card span-12" id="season-end" style="display:none"><h2>Season Complete</h2><div id="season-summary"></div><div class="actions"><button type="button" class="btn primary" id="enter-draft">Enter Offseason & Draft</button></div></div>
+      </div>
+    </section>
+  </main>
+
+  <div class="player-modal-backdrop" id="player-dialog" aria-hidden="true">
+    <section class="player-modal" role="dialog" aria-modal="true" aria-label="Player details">
+      <div class="dialogtop"><div id="dialog-player-head"></div><button type="button" class="iconbtn" id="dialog-close" aria-label="Close player">×</button></div>
+      <div class="dialogtabs"><button type="button" data-player-tab="season" class="active">Season</button><button type="button" data-player-tab="career">Career</button><button type="button" data-player-tab="gamelog">Game Log</button><button type="button" data-player-tab="development">Development</button></div>
+      <div class="dialogbody" id="dialog-player-body"></div>
+    </section>
+  </div>
+
+  <div class="footer">Fictional league and players. Beta 0.3 adds quick sim, in-season development, stronger scouting tiers, a live draft room, CPU trades, and first-pass player trade logic.</div>
+</div>
+<script>
+(function(){
+  const root=document.getElementById('gd'); if(!root || root.dataset.ready) return; root.dataset.ready='1';
+  const $=(s)=>root.querySelector(s), $$=(s)=>Array.from(root.querySelectorAll(s));
+  const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+  const avg=(arr)=>arr.length?arr.reduce((a,b)=>a+b,0)/arr.length:0;
+  const rint=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
+  const pick=(a)=>a[rint(0,a.length-1)];
+  const gauss=()=>{let u=0,v=0;while(!u)u=Math.random();while(!v)v=Math.random();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v)};
+  const money=(n)=>{const sign=n<0?'-':'';return sign+'$'+Math.abs(Number(n)||0).toFixed(1)+'M'};
+  const pct=(n)=>Math.round(clamp(n,0,100))+'%';
+  const deepClone=(o)=>JSON.parse(JSON.stringify(o));
+  const SAVE_KEY='gridiron_dynasty_beta_0_3_save_v1';
+  const OLD_SAVE_KEYS=['gridiron_dynasty_beta_0_2_save_v1'];
+
+  const teamDefs=[
+    {name:'Capital City Sentinels',abbr:'CCS',ovr:80,user:true,weak:'short',style:'balanced',needs:['OT','CB'],draftStyle:'balanced',scoutSkill:72},
+    {name:'Baltimore Admirals',abbr:'BAL',ovr:83,weak:'run',style:'physical',rumorWeak:'deep',needs:['WR','CB'],draftStyle:'aggressive',scoutSkill:76},
+    {name:'Brooklyn Bolts',abbr:'BRK',ovr:78,weak:'deep',style:'aggressive',rumorWeak:'run',needs:['OT','LB'],draftStyle:'aggressive',scoutSkill:66},
+    {name:'Orlando Orbit',abbr:'ORL',ovr:81,weak:'short',style:'balanced',rumorWeak:'pass',needs:['QB','DE'],draftStyle:'balanced',scoutSkill:71},
+    {name:'St. Louis Archers',abbr:'STL',ovr:84,weak:'pass',style:'disciplined',rumorWeak:'run',needs:['RB','CB'],draftStyle:'conservative',scoutSkill:82},
+    {name:'Portland Pioneers',abbr:'POR',ovr:77,weak:'run',style:'young',rumorWeak:'short',needs:['QB','DT'],draftStyle:'young',scoutSkill:63},
+    {name:'San Antonio Stampede',abbr:'SAS',ovr:82,weak:'deep',style:'pressure',rumorWeak:'short',needs:['OT','S'],draftStyle:'aggressive',scoutSkill:75},
+    {name:'Columbus Captains',abbr:'COL',ovr:79,weak:'short',style:'conservative',rumorWeak:'deep',needs:['WR','LB'],draftStyle:'conservative',scoutSkill:69}
+  ];
+  const scheduleOrder=['BAL','BRK','ORL','STL','POR','SAS','COL','BAL'];
+  const first=['Darius','Malik','Jordan','Trey','Andre','Marcus','Evan','Noah','Caleb','Jalen','Tyler','Isaiah','Devin','Cameron','Miles','Avery','Grant','Xavier','Rashad','Cole','Micah','Bryce','Jaylen','Dante'];
+  const last=['Brooks','Carter','Hayes','Turner','Reed','Mitchell','Bennett','Price','Foster','Coleman','Ward','Parker','Young','Simmons','Powell','Morgan','Ross','Bell','Cooper','Bailey','Murphy','Richardson','Howard','Peterson'];
+  const traits=['High Motor','Team Leader','Film Junkie','Raw Athlete','Quiet Worker','Clutch','Streaky','Coachable','Competitive','Versatile'];
+  const posDefs=[['QB','OFF',3],['RB','OFF',4],['WR','OFF',7],['TE','OFF',3],['OT','OFF',5],['G','OFF',4],['C','OFF',2],['DE','DEF',5],['DT','DEF',4],['LB','DEF',6],['CB','DEF',6],['S','DEF',4],['K','ST',1],['P','ST',1]];
+  const statKeys=['passAtt','passComp','passYds','passTD','passInt','rushAtt','rushYds','rushTD','rec','recYds','recTD','tackles','sacks','defInt','fgM','fgA','xpM','punts','puntYds'];
+  const blankStats=()=>Object.fromEntries(statKeys.map(k=>[k,0]));
+  const draftPositions=['QB','RB','WR','TE','OT','DE','DT','LB','CB','S'];
+  const prospectStories=['Three-year starter with clean tape','Explosive athlete with uneven technique','Team captain with a high football IQ','Late bloomer who surged as a senior','High-upside traits prospect with limited starts','Productive small-school riser','Big-game performer with a strong locker-room reputation','Technician whose testing numbers are only average','Former multi-sport athlete still learning the position','Highly productive player with one clear projection question'];
+  const archetypes={QB:['Pocket Distributor','Dual Threat','Vertical Gunslinger'],RB:['Power Back','One-Cut Runner','Receiving Back'],WR:['Route Technician','Vertical Threat','Possession Target'],TE:['Move TE','Inline Blocker','Mismatch Target'],OT:['Pass Protector','Mauler','Athletic Tackle'],DE:['Speed Rusher','Power End','Edge Setter'],DT:['Gap Plugger','Interior Rusher','Power Tackle'],LB:['Field General','Coverage Backer','Downhill Thumper'],CB:['Man Cover','Zone Ballhawk','Press Corner'],S:['Center Fielder','Box Safety','Versatile Safety']};
+  function generateDraftClass(year){
+    const arr=draftPositions.map((pos,i)=>{const trueOvr=clamp(Math.round(72+gauss()*4+(i<3?1:0)),65,84),potential=clamp(trueOvr+rint(3,17),70,99);return {id:`${year}-${i}-${rint(100,999)}`,name:pick(first)+' '+pick(last),pos,trueOvr,potential,age:rint(21,23),archetype:pick(archetypes[pos]||['Balanced']),story:prospectStories[i%prospectStories.length],scoutBias:rint(-6,6),potBias:rint(-7,7),drafted:false,draftedBy:null,pick:null}});
+    arr.sort((a,b)=>(b.trueOvr+b.potential*.18)-(a.trueOvr+a.potential*.18));arr.forEach((p,i)=>p.boardRank=i+1);return arr;
+  }
+  function makeTradeMarket(year,teams){
+    const poss=['RB','QB','WR','OT','DE','CB','LB'];
+    return teams.filter(t=>!t.user).map((t,i)=>{const pos=poss[i%poss.length],older=i===0,age=older?31:rint(24,32),ovr=older?92:clamp(Math.round(82+gauss()*5),75,94),potential=clamp(ovr+rint(-2,9),72,97);return {id:`tm-${year}-${t.abbr}`,teamAbbr:t.abbr,name:pick(first)+' '+pick(last),pos,age,ovr,potential,salary:+(1.5+Math.max(0,ovr-75)*.28+(pos==='QB'?4:0)+Math.random()*2).toFixed(1),available:true}});
+  }
+  function defaultFutureAssets(season){const y=season+2;return [1,2,3].flatMap(round=>[{id:`${y}-r${round}`,label:`${y} ${round===1?'1st':round===2?'2nd':'3rd'}-round pick`,value:round===1?115:round===2?55:25},{id:`${y+1}-r${round}`,label:`${y+1} ${round===1?'1st':round===2?'2nd':'3rd'}-round pick`,value:round===1?96:round===2?46:20}]);}
+
+
+  function ageRange(pos){if(pos==='QB')return [22,34];if(pos==='RB')return [21,30];if(['WR','CB','S'].includes(pos))return [21,31];if(['OT','G','C','DT'].includes(pos))return [22,33];return [21,32]}
+  function makeRoster(){let id=0;const out=[];posDefs.forEach(([p,g,count])=>{for(let i=0;i<count;i++){const range=ageRange(p),age=rint(range[0],range[1]);const ovr=clamp(Math.round(76+gauss()*6+(p==='QB'?2:0)),62,94);const upside=clamp(Math.round(ovr+rint(-5,15)+(age<=24?rint(0,5):0)),60,99);const salary=+(0.7+Math.max(0,ovr-70)*0.11+(p==='QB'?1.2:0)+Math.random()*1.2).toFixed(1);out.push({id:id++,name:pick(first)+' '+pick(last),pos:p,group:g,ovr,age,salary,trait:pick(traits),potential:upside,seasonStats:blankStats(),careerStats:blankStats(),gameLog:[],ratingHistory:[ovr],lastProgression:'No offseason progression yet.',inSeasonGains:0,lastInSeasonProgression:'No in-season rating change yet.'})}});return out}
+  function newState(){
+    const teams=deepClone(teamDefs).map(t=>({...t,w:0,l:0}));
+    const intel={};teams.filter(t=>!t.user).forEach(t=>intel[t.abbr]=rint(2,10));
+    return {season:2026,week:1,w:0,l:0,cash:28.5,fans:63,teams,roster:makeRoster(),schedule:scheduleOrder.map((abbr,i)=>({week:i+1,abbr,result:null,score:null})),offHistory:[],offPlan:'balanced',defPlan:'balanced',facilities:{stadium:1,training:1,medical:1,analytics:1,scouting:1},project:null,intel,scoutedWeek:null,showExactPotential:false,autoScout:true,lastGame:null,news:['Beta 0.3 begins: the league now has a live draft room and CPU-to-CPU draft trades.','Quick Sim is available from the dashboard and uses your saved game plan.','Scouting tiers now start with obvious public-film tendencies and scale much more sharply.','Players can earn small in-season rating bumps, but the offseason remains the main development window.'],selectedPlayer:null,playerTab:'season',draftClass:generateDraftClass(2027),draftState:null,tradeMarket:makeTradeMarket(2027,teams),futureAssets:defaultFutureAssets(2026),selectedTradeTarget:null,selectedTradeAssets:[],lastTradeMessage:'',tradeHistory:[]}
+  }
+  function migrateState(s){
+    const defs=Object.fromEntries(teamDefs.map(t=>[t.abbr,t]));s.teams=(s.teams||[]).map(t=>({...defs[t.abbr],...t}));
+    s.roster=(s.roster||[]).map(p=>({...p,inSeasonGains:p.inSeasonGains||0,lastInSeasonProgression:p.lastInSeasonProgression||'No in-season rating change yet.'}));
+    s.offPlan=s.offPlan||'balanced';s.defPlan=s.defPlan||'balanced';s.draftClass=s.draftClass||generateDraftClass((s.season||2026)+1);s.draftState=s.draftState||null;s.tradeMarket=s.tradeMarket||makeTradeMarket((s.season||2026)+1,s.teams);s.futureAssets=s.futureAssets||defaultFutureAssets(s.season||2026);s.selectedTradeTarget=s.selectedTradeTarget||null;s.selectedTradeAssets=s.selectedTradeAssets||[];s.lastTradeMessage=s.lastTradeMessage||'';s.tradeHistory=s.tradeHistory||[];return s;
+  }
+  let state=loadState()||newState();
+
+  function saveState(){try{localStorage.setItem(SAVE_KEY,JSON.stringify(state))}catch(e){}}
+  function loadState(){try{let raw=localStorage.getItem(SAVE_KEY);if(!raw){for(const k of OLD_SAVE_KEYS){raw=localStorage.getItem(k);if(raw)break}}if(!raw)return null;const s=JSON.parse(raw);if(!s || !s.roster || !s.facilities)return null;return migrateState(s)}catch(e){return null}}
+  function currentOpp(){const s=state.schedule[state.week-1];return s?state.teams.find(t=>t.abbr===s.abbr):null}
+  function teamRating(){return Math.round(avg(state.roster.map(p=>p.ovr)))}
+  function offenseRating(){return Math.round(avg(state.roster.filter(p=>p.group==='OFF').map(p=>p.ovr)))}
+  function defenseRating(){return Math.round(avg(state.roster.filter(p=>p.group==='DEF').map(p=>p.ovr)))}
+  function payroll(){return +(state.roster.reduce((s,p)=>s+p.salary,0)/18).toFixed(1)}
+  function winPct(){const g=state.w+state.l;return g?state.w/g:.5}
+  function styleLabel(v){return {balanced:'Balanced',run:'Run Heavy',short:'Quick / Short Pass',pass:'Pass Heavy',vertical:'Vertical Attack'}[v]||v}
+  function weaknessLabel(v){return {run:'interior run defense',deep:'deep coverage',short:'short-area zone spacing',pass:'overall pass defense'}[v]||'unknown area'}
+  function potentialStars(p){if(p>=90)return 5;if(p>=82)return 4;if(p>=74)return 3;if(p>=66)return 2;return 1}
+  function potentialDisplay(p){if(state.showExactPotential)return String(p.potential);const s=potentialStars(p.potential);return '<span class="star">'+'★'.repeat(s)+'</span><span class="unknown">'+'☆'.repeat(5-s)+'</span>'}
+  function repeatedStylePenalty(style){const recent=state.offHistory.slice(-4);const count=recent.filter(x=>x===style).length;return Math.max(0,(count-1)*2.5-(state.facilities.analytics-1)*.9)}
+  function adaptationLevel(){if(!state.offHistory.length)return 0;const recent=state.offHistory.slice(-5),counts={};recent.forEach(x=>counts[x]=(counts[x]||0)+1);return clamp((Math.max(...Object.values(counts))-1)*25,0,100)}
+  function favoredStyle(){if(!state.offHistory.length)return null;const counts={};state.offHistory.forEach(x=>counts[x]=(counts[x]||0)+1);return Object.keys(counts).sort((a,b)=>counts[b]-counts[a])[0]}
+  function scoutingConfidence(abbr){const raw=state.intel[abbr]||0,base=[0,22,38,55,70,82][state.facilities.scouting]||22;return clamp(Math.round(base+raw*.72),0,100)}
+  function intelRange(team,conf){const spread=conf>=85?1:conf>=70?2:conf>=50?3:conf>=30?5:7;return `${clamp(team.ovr-spread,60,99)}–${clamp(team.ovr+spread,60,99)}`}
+  function scoutingText(team){
+    if(!team)return {conf:0,summary:'No opponent remaining.',weak:'—'};
+    const conf=scoutingConfidence(team.abbr),range=intelRange(team,conf);
+    let style=conf>=20?`${team.style[0].toUpperCase()+team.style.slice(1)} identity`:'Identity still being verified';
+    let weak=`Film shows a likely emphasis around ${weaknessLabel(team.rumorWeak||team.weak)}, but your staff is not yet comfortable calling it a true weakness.`;
+    if(conf>=35&&conf<58){const read=state.facilities.scouting>=2?team.weak:(team.rumorWeak||team.weak);weak=`Likely weakness: ${weaknessLabel(read)}. Your staff sees enough on film to prepare for it, but the read is still fallible.`}
+    if(conf>=58&&conf<78)weak=`Strong read: ${weaknessLabel(team.weak)} consistently shows up as the best area to attack.`;
+    if(conf>=78)weak=`Confirmed tendency: ${weaknessLabel(team.weak)} is a high-confidence weakness with supporting situational tendencies.`;
+    return {conf,summary:`Estimated team strength ${range} OVR · ${style}`,weak};
+  }
+
+  function switchTab(name){$$('.panel').forEach(p=>p.classList.toggle('active',p.dataset.panel===name));$$('[data-tab]').forEach(b=>b.setAttribute('aria-current',b.dataset.tab===name?'page':'false'));closeMenu();window.scrollTo(0,0)}
+  function openMenu(){const m=$('#menu-backdrop');m.classList.add('open');m.setAttribute('aria-hidden','false');document.body.classList.add('nav-open')}
+  function closeMenu(){const m=$('#menu-backdrop');m.classList.remove('open');m.setAttribute('aria-hidden','true');document.body.classList.remove('nav-open')}
+  function safeTap(el,fn){if(!el)return;el.addEventListener('click',fn,false);el.addEventListener('touchend',function(e){e.preventDefault();fn(e)}, {passive:false})}
+  safeTap($('#menu-open'),openMenu);safeTap($('#menu-close'),closeMenu);$('#menu-backdrop').addEventListener('click',function(e){if(e.target===$('#menu-backdrop'))closeMenu()},false);$$('[data-tab]').forEach(function(b){b.addEventListener('click',function(){switchTab(b.dataset.tab)},false)});
+  $('#home-gameday').addEventListener('click',()=>switchTab('gameday'));$('#home-scout').addEventListener('click',()=>switchTab('scouting'));$('#home-quick-sim').addEventListener('click',()=>simulateGame('quick'));
+
+  function renderHeader(){const done=state.week>state.schedule.length;$('#season-pill').textContent=`Season ${state.season} · ${done?'Complete':'Week '+state.week}`;$('#record-pill').textContent=`${state.w}-${state.l}`}
+  function renderHome(){
+    $('#cash-kpi').textContent=money(state.cash);$('#fans-kpi').textContent=pct(state.fans);$('#ovr-kpi').textContent=teamRating();$('#payroll-kpi').textContent=money(payroll());$('#fan-bar').style.width=clamp(state.fans,0,100)+'%';
+    const warn=$('#financial-warning');if(state.cash<0){warn.style.display='block';warn.className='callout badline';warn.textContent=`The franchise is ${money(state.cash)} in the red. Winning and home-game revenue now have immediate business consequences.`}else if(state.cash<8){warn.style.display='block';warn.className='callout';warn.textContent='Cash reserve is getting thin. A major construction project could put the franchise in the red.'}else warn.style.display='none';
+    const opp=currentOpp();if(opp){const rep=scoutingText(opp);$('#next-opponent').innerHTML=`<b>${opp.name}</b><div class="muted small" style="margin-top:4px">${rep.summary}</div><div class="tiny muted" style="margin-top:6px">Scouting confidence: ${rep.conf}%</div>`}else $('#next-opponent').innerHTML='<b>Season complete</b><div class="muted small">Review the league tab and run the offseason.</div>';$('#home-gameday').disabled=!opp;$('#home-scout').disabled=!opp;$('#home-quick-sim').disabled=!opp;$('#quick-sim-note').textContent=opp?`Quick Sim uses ${styleLabel(state.offPlan)} offense and ${state.defPlan[0].toUpperCase()+state.defPlan.slice(1)} defense.`:'Season complete — enter the offseason from the League or Draft screen.';
+    const ad=adaptationLevel(),fav=favoredStyle();$('#adaptation-bar').style.width=ad+'%';$('#adaptation-summary').textContent=fav?`The league is building a book on your ${styleLabel(fav)} tendencies.`:'Your offense has not shown enough repeated film to create a strong league-wide counter yet.';const c=$('#adaptation-callout');if(ad>=75)c.textContent=`Opponents have a strong read on your ${styleLabel(fav)} identity. Keep forcing it and efficiency will drop.`;else if(ad>=50)c.textContent=`Defenses are beginning to sit on your ${styleLabel(fav)} concepts. Mixing the plan can buy back efficiency.`;else if(ad>=25)c.textContent=`Film rooms have noticed a ${styleLabel(fav)} lean, but it is not fully solved yet.`;else c.textContent='No strong tendency yet. The league is still learning what you like to call.';
+    $('#news-list').innerHTML=state.news.slice(0,6).map(n=>`<div class="newsitem">${n}</div>`).join('');
+    $('#home-project').innerHTML=state.project?projectMarkup(true):'<div class="muted small">No active construction. Facility upgrades must be scheduled and completed over time.</div>';
+  }
+
+  function statLine(p,s=p.seasonStats){if(p.pos==='QB')return `${s.passYds} PYD · ${s.passTD} TD · ${s.passInt} INT`;if(p.pos==='RB')return `${s.rushYds} RYD · ${s.rushTD} TD`;if(['WR','TE'].includes(p.pos))return `${s.rec} REC · ${s.recYds} YD · ${s.recTD} TD`;if(['DE','DT','LB','CB','S'].includes(p.pos))return `${s.tackles} TKL · ${s.sacks.toFixed(1)} SCK · ${s.defInt} INT`;if(p.pos==='K')return `${s.fgM}/${s.fgA} FG · ${s.xpM} XP`;if(p.pos==='P')return s.punts?`${(s.puntYds/s.punts).toFixed(1)} AVG · ${s.punts} P`:'No punts yet';return 'No tracked box-score stat yet'}
+  function renderRoster(){const f=$('#pos-filter').value,rows=state.roster.filter(p=>f==='ALL'||p.group===f).sort((a,b)=>b.ovr-a.ovr);$('#roster-body').innerHTML=rows.map(p=>`<tr><td><button type="button" class="playerbtn" data-player="${p.id}"><span class="avatar" aria-hidden="true"></span><span><b>${p.name}</b><br><span class="muted tiny">${p.trait}</span></span></button></td><td>${p.pos}</td><td class="ovr ${p.ovr>=85?'good':p.ovr<72?'warntext':''}">${p.ovr}</td><td>${p.age}</td><td>${potentialDisplay(p)}</td><td>${statLine(p)}</td></tr>`).join('');$$('[data-player]').forEach(b=>b.addEventListener('click',()=>openPlayer(Number(b.dataset.player))))}
+  $('#pos-filter').addEventListener('change',renderRoster);
+
+  function renderScoutReport(target){const opp=currentOpp();if(!opp){target.innerHTML='<div class="muted">No opponent remaining this season.</div>';return}const r=scoutingText(opp);target.innerHTML=`<div class="meterrow"><div><b>${opp.name}</b><div class="muted small">${r.summary}</div></div><span class="pill">${r.conf}% confidence</span></div><div class="bar"><span style="width:${r.conf}%;background:${r.conf>=70?'var(--good)':r.conf>=40?'var(--warn)':'var(--purple)'}"></span></div><div class="callout ${r.conf>=70?'goodline':''}">${r.weak}</div><div class="muted tiny" style="margin-top:8px">Better scouting does not create a weakness — it improves how quickly and accurately your staff can identify what is actually there.</div>`}
+  function extraScout(){const opp=currentOpp();if(!opp)return;if(state.scoutedWeek===`${state.season}-${state.week}`){state.news.unshift('Scouting staff has already used its extra weekly focus for this opponent.');renderAll();return}if(state.cash<.15){state.news.unshift('Extra scouting was canceled because the franchise cannot cover the $0.15M travel and staff cost.');renderAll();return}state.cash-=.15;const gain=12+state.facilities.scouting*7+rint(-2,4);state.intel[opp.abbr]=clamp((state.intel[opp.abbr]||0)+gain,0,100);state.scoutedWeek=`${state.season}-${state.week}`;state.news.unshift(`Scouting focused on ${opp.name}. The department added ${gain} intel points and upgraded the confidence of this week's report.`);renderAll()}
+  $('#scout-focus').addEventListener('click',extraScout);$('#gameday-scout').addEventListener('click',extraScout);
+  function renderScouting(){renderScoutReport($('#scout-main'));renderScoutReport($('#opponent-scout'));const l=state.facilities.scouting,base=[0,22,38,55,70,82][l];$('#scout-dept').innerHTML=`<div><b>Director Lena Ward · 74 OVR</b></div><div class="muted small">Methodical · Film-first · Level ${l} department</div><div class="callout">Level ${l} begins each matchup with about <b>${base}% baseline confidence</b> from public film, tendencies and advance work. Extra focus adds detail rather than starting from zero.</div>`;$('#intel-body').innerHTML=state.teams.filter(t=>!t.user).map(t=>{const c=scoutingConfidence(t.abbr),r=scoutingText(t);let know=c<25?'Very little reliable information':c<50?'General identity and broad rating range':c<70?'Possible weakness, not yet confirmed':'Reliable strength range and confirmed weakness';return `<tr><td>${t.name}</td><td>${c}%</td><td>${know}</td></tr>`}).join('');const used=state.scoutedWeek===`${state.season}-${state.week}`;$('#scout-focus').disabled=used||!currentOpp();$('#scout-focus').textContent=used?'Extra Scouting Used This Week':'Assign Extra Scouting · $0.15M';$('#gameday-scout').disabled=used||!currentOpp();$('#gameday-scout').textContent=used?'Extra Scouting Used':'Assign Extra Scouting'}
+
+  const facilityInfo={
+    stadium:{name:'Stadium',base:6.0,weeks:12,desc:'Raises capacity and home-game revenue.',effect:l=>`Capacity ${52000+(l-1)*8000} seats.`,impact:'During construction, usable capacity is reduced by 15%.'},
+    training:{name:'Training Complex',base:4.5,weeks:6,desc:'Improves development odds without guaranteeing ratings.',effect:l=>`In-season breakout chance +${((l-1)*1.2).toFixed(1)} pts; offseason growth modifier +${((l-1)*.22).toFixed(2)}.`,impact:'Applies to small in-season breakout chances and the larger offseason development model.'},
+    medical:{name:'Medical Center',base:4.0,weeks:6,desc:'Reduces modeled injury risk and improves recovery systems.',effect:l=>`${(l-1)*3}% modeled injury-risk reduction.`,impact:'Injuries are still light in this beta, but the construction timeline is active.'},
+    analytics:{name:'Analytics Department',base:3.5,weeks:5,desc:'Helps recognize counters and reduce scheme-predictability penalties.',effect:l=>`${Math.round((l-1)*.9*10)/10} points of adaptation protection.`,impact:'Helps you adapt; it does not reveal opponent weaknesses.'},
+    scouting:{name:'Scouting Department',base:3.8,weeks:5,desc:'Improves opponent reports and draft evaluation clarity.',effect:l=>`Baseline opponent confidence about ${[0,22,38,55,70,82][l]}%.`,impact:'Directly sharpens fog-of-war, report reliability and draft grade ranges.'}
+  };
+  function upgradeCost(k){const l=state.facilities[k];return +(facilityInfo[k].base*Math.pow(1.55,l-1)).toFixed(1)}
+  function projectMarkup(compact=false){if(!state.project)return '<div class="muted small">No active project.</div>';const p=state.project,i=facilityInfo[p.key],pctDone=Math.round((1-p.weeksRemaining/p.totalWeeks)*100);return `<div class="project"><div class="meterrow"><div><b>${i.name} → Level ${p.targetLevel}</b><div class="muted small">${p.weeksRemaining} week${p.weeksRemaining===1?'':'s'} remaining</div></div><span class="pill">${pctDone}%</span></div><div class="bar"><span style="width:${pctDone}%;background:var(--warn)"></span></div>${compact?'':`<div class="muted tiny" style="margin-top:8px">${i.impact}</div>`}</div>`}
+  function startProject(k){const i=facilityInfo[k],l=state.facilities[k];if(l>=5)return;if(state.project){state.news.unshift(`Construction request denied: ${facilityInfo[state.project.key].name} is already the active capital project.`);renderAll();return}const cost=upgradeCost(k);if(state.cash<cost){state.news.unshift(`${i.name} project cannot start because the franchise cannot cover ${money(cost)}.`);renderAll();return}state.cash-=cost;const weeks=i.weeks+Math.max(0,l-1)*2;state.project={key:k,targetLevel:l+1,weeksRemaining:weeks,totalWeeks:weeks,cost};state.news.unshift(`${i.name} Level ${l+1} project approved for ${money(cost)}. Estimated timeline: ${weeks} weeks.`);renderAll()}
+  function advanceConstruction(weeks){if(!state.project)return;state.project.weeksRemaining-=weeks;if(state.project.weeksRemaining<=0){const p=state.project;state.facilities[p.key]=p.targetLevel;state.news.unshift(`${facilityInfo[p.key].name} construction is complete. The facility is now Level ${p.targetLevel}.`);state.project=null}}
+  function renderFacilities(){$('#project-status').innerHTML=projectMarkup();$('#facility-grid').innerHTML=Object.keys(facilityInfo).map(k=>{const i=facilityInfo[k],l=state.facilities[k],cost=upgradeCost(k),busy=!!state.project,next=l<5?i.effect(l+1):'Maximum facility level reached.';return `<div class="card span-6"><div class="facility"><div><h2>${i.name}</h2><div class="muted small">${i.desc}</div></div><span class="pill">Level ${l}/5</span></div><div class="levels">${[1,2,3,4,5].map(x=>`<span class="leveldot ${x<=l?'on':''}"></span>`).join('')}</div><div class="small">Current effect: <b>${i.effect(l)}</b></div><div class="callout goodline" style="margin-top:8px"><b>Next level:</b> ${next}</div><div class="muted tiny" style="margin-top:7px">${l<5?`Project time: ${i.weeks+Math.max(0,l-1)*2} weeks · Cost: ${money(cost)}. `:''}${i.impact}</div><div class="actions"><button type="button" class="btn ${l<5&&!busy?'primary':''}" data-project="${k}" ${l>=5||busy?'disabled':''}>${l>=5?'Maxed':busy?'Capital Project Already Active':`Schedule Upgrade · ${money(cost)}`}</button></div></div>`}).join('');$$('[data-project]').forEach(b=>b.addEventListener('click',()=>startProject(b.dataset.project)))}
+
+  function addStats(p,delta){for(const k of statKeys){const v=delta[k]||0;p.seasonStats[k]+=v;p.careerStats[k]+=v}}
+  function starters(pos,n=1){return state.roster.filter(p=>p.pos===pos).sort((a,b)=>b.ovr-a.ovr).slice(0,n)}
+  function distributeStats(game){
+    const qb=starters('QB')[0],rbs=starters('RB',2),wrs=[...starters('WR',4),...starters('TE',2)],defs=state.roster.filter(p=>p.group==='DEF').sort((a,b)=>b.ovr-a.ovr).slice(0,16),k=starters('K')[0],punter=starters('P')[0];
+    if(qb){const att=clamp(Math.round(game.pass/7.4+rint(3,8)),18,48),comp=clamp(Math.round(att*(.57+qb.ovr/500+gauss()*.025)),8,att),td=clamp(Math.round(game.us/10+gauss()),0,5),ints=clamp(Math.round((88-qb.ovr)/18+Math.max(0,gauss())),0,4);addStats(qb,{passAtt:att,passComp:comp,passYds:game.pass,passTD:td,passInt:ints});qb.gameLog.push({season:state.season,week:state.week,opp:game.opp.abbr,line:`${comp}/${att}, ${game.pass} YD, ${td} TD, ${ints} INT`})}
+    if(rbs.length){const shares=[.68,.32];rbs.forEach((p,i)=>{const y=Math.round(game.rush*shares[i]),att=clamp(Math.round(y/(4.1+gauss()*.5)),2,30),td=i===0?clamp(Math.round(game.us/16+gauss()),0,3):clamp(Math.round(game.us/30+gauss()),0,2);addStats(p,{rushAtt:att,rushYds:y,rushTD:td});p.gameLog.push({season:state.season,week:state.week,opp:game.opp.abbr,line:`${att} CAR, ${y} YD, ${td} TD`})})}
+    if(wrs.length){let left=game.pass;const weights=wrs.map((p,i)=>Math.max(1,p.ovr+(i<2?7:0)-70+Math.random()*10)),sum=weights.reduce((a,b)=>a+b,0);wrs.forEach((p,i)=>{let y=i===wrs.length-1?left:Math.max(0,Math.round(game.pass*weights[i]/sum));left-=y;const rec=clamp(Math.round(y/(10.5+Math.random()*4)),0,12),td=Math.random()<Math.min(.65,game.us/45)?1:0;addStats(p,{rec,recYds:y,recTD:td});p.gameLog.push({season:state.season,week:state.week,opp:game.opp.abbr,line:`${rec} REC, ${y} YD, ${td} TD`})})}
+    defs.forEach((p,i)=>{const tackles=rint(i<5?4:2,i<5?10:7),sacks=['DE','DT','LB'].includes(p.pos)&&Math.random()<.28?0.5*(Math.random()<.35?2:1):0,di=['CB','S','LB'].includes(p.pos)&&Math.random()<.07?1:0;addStats(p,{tackles,sacks,defInt:di});p.gameLog.push({season:state.season,week:state.week,opp:game.opp.abbr,line:`${tackles} TKL, ${sacks.toFixed(1)} SCK, ${di} INT`})});
+    if(k){const fga=clamp(Math.round((game.us%7)/3)+rint(0,2),0,5),fgm=clamp(fga-(Math.random()<.2?1:0),0,fga),xp=Math.max(0,Math.floor(game.us/7));addStats(k,{fgA:fga,fgM:fgm,xpM:xp});k.gameLog.push({season:state.season,week:state.week,opp:game.opp.abbr,line:`${fgm}/${fga} FG, ${xp} XP`})}
+    if(punter){const punts=rint(2,6),yd=punts*rint(42,49);addStats(punter,{punts,puntYds:yd});punter.gameLog.push({season:state.season,week:state.week,opp:game.opp.abbr,line:`${punts} PUNTS, ${(yd/punts).toFixed(1)} AVG`})}
+  }
+  function simOtherGames(exclude){const others=state.teams.filter(t=>!t.user&&t.abbr!==exclude);for(let i=0;i<others.length-1;i+=2){const a=others[i],b=others[i+1];if(!b)break;const p=1/(1+Math.exp(-(a.ovr-b.ovr)/6));if(Math.random()<p){a.w++;b.l++}else{b.w++;a.l++}}}
+  function autoScoutNext(){if(!state.autoScout)return;const next=currentOpp();if(!next)return;const gain=7+state.facilities.scouting*4+rint(0,4);state.intel[next.abbr]=clamp((state.intel[next.abbr]||0)+gain,0,100)}
+  function inSeasonProgression(){
+    const train=state.facilities.training,weekPlayed=state.week,eligible=[];
+    state.roster.forEach(p=>{if((p.inSeasonGains||0)>=2)return;const perf=performanceScore(p);if(perf<72)return;const agePenalty=p.age>=31?.05:0,potRoom=Math.max(0,p.potential-p.ovr),chance=clamp(.035+(perf-72)*.007+(train-1)*.012+(potRoom>7?.025:0)-agePenalty,.02,.28);if(Math.random()<chance)eligible.push({p,perf})});
+    eligible.sort((a,b)=>b.perf-a.perf).slice(0,2).forEach(({p,perf})=>{const old=p.ovr;p.ovr=clamp(p.ovr+1,55,97);p.inSeasonGains=(p.inSeasonGains||0)+1;p.ratingHistory=p.ratingHistory||[old];p.ratingHistory.push(p.ovr);if(p.ratingHistory.length>16)p.ratingHistory.shift();p.lastInSeasonProgression=`Week ${weekPlayed}: ${old} → ${p.ovr} (+1) after sustained high-level play (performance score ${Math.round(perf)}).`;state.news.unshift(`Development: ${p.name} earned a small in-season +1 OVR bump after sustained production. The offseason remains the main progression window.`)});
+  }
+
+  function simulateGame(mode='deep'){
+    const opp=currentOpp();if(!opp)return;const off=state.offPlan||'balanced',def=state.defPlan||'balanced',repeatPenalty=repeatedStylePenalty(off),report=scoutingText(opp);let matchBonus=0;const chooseWeak=(opp.weak==='run'&&off==='run')||(opp.weak==='pass'&&off==='pass')||(opp.weak==='deep'&&off==='vertical')||(opp.weak==='short'&&off==='short');if(chooseWeak){matchBonus=report.conf>=70?3.4:report.conf>=40?1.4:0}
+    const offBase=offenseRating()+matchBonus-repeatPenalty;let defBonus=0;if(def==='contain'&&opp.style==='aggressive')defBonus=2.5;if(def==='runstop'&&opp.style==='physical')defBonus=2.5;if(def==='blitz'&&opp.style==='conservative')defBonus=2;
+    let us=clamp(Math.round(21+(offBase-opp.ovr)*.68+gauss()*6),6,48),them=clamp(Math.round(20+(opp.ovr-(defenseRating()+defBonus))*.62+gauss()*6),6,45);if(us===them){Math.random()<.5?us+=3:them+=3}const win=us>them;if(win){state.w++;opp.l++;state.fans=clamp(state.fans+3.2,0,100)}else{state.l++;opp.w++;state.fans=clamp(state.fans-2.2,0,100)}
+    let cap=52000+(state.facilities.stadium-1)*8000;if(state.project&&state.project.key==='stadium')cap=Math.round(cap*.85);const attendance=Math.round(cap*clamp(.52+state.fans/220+winPct()*.13+gauss()*.025,.45,.99)),revenue=attendance*103/1e6,expenses=payroll()+2.2,profit=+(revenue-expenses).toFixed(1);state.cash+=profit;
+    const totalY=clamp(Math.round(335+(offBase-78)*7+gauss()*45),210,590),rushShare={run:.48,balanced:.35,short:.27,pass:.22,vertical:.18}[off],rush=Math.round(totalY*rushShare),pass=totalY-rush;const game={opp,us,them,win,totalY,rush,pass,profit,attendance,off,def};distributeStats(game);inSeasonProgression();state.offHistory.push(off);const s=state.schedule[state.week-1];s.result=win?'W':'L';s.score=`${us}-${them}`;state.lastGame=game;state.news.unshift(`${win?'WIN':'LOSS'}: Sentinels ${us}, ${opp.abbr} ${them}. ${attendance.toLocaleString()} fans attended; weekly cash flow was ${money(profit)}.`);if(repeatPenalty>=2.5)state.news.unshift(`Film-room note: opponents were sitting on several ${styleLabel(off)} concepts. Repetition cut into your efficiency.`);simOtherGames(opp.abbr);advanceConstruction(1);state.week++;state.scoutedWeek=null;autoScoutNext();renderAll();showGameResult(game);if(mode==='quick')switchTab('home');saveState()
+  }
+  $('#sim-game').addEventListener('click',()=>simulateGame('deep'));
+  $('#off-plan').addEventListener('change',()=>{state.offPlan=$('#off-plan').value;renderGamePlanNote();saveState()});$('#def-plan').addEventListener('change',()=>{state.defPlan=$('#def-plan').value;saveState()});
+  function renderGamePlanNote(){const v=state.offPlan||$('#off-plan').value,pen=repeatedStylePenalty(v);$('#gameplan-note').textContent=pen>0?`Warning: defenses have seen this look repeatedly. Current adaptation penalty is about ${pen.toFixed(1)} rating points before matchup effects.`:'This choice is not currently overused enough to trigger a major adaptation penalty.'}
+  function showGameResult(g=state.lastGame){if(!g){$('#game-result-card').style.display='none';return}$('#game-result-card').style.display='block';$('#final-score-us').textContent=g.us;$('#final-score-them').textContent=g.them;$('#final-result').textContent=g.win?'WIN':'LOSS';$('#final-result').className='result '+(g.win?'good':'badtext');$('#final-opponent').textContent=g.opp.name;$('#final-opp-abbr').textContent=g.opp.abbr;$('#stat-yards').textContent=g.totalY;$('#stat-rush').textContent=g.rush;$('#stat-pass').textContent=g.pass;$('#stat-profit').textContent=money(g.profit)}
+
+  function performanceScore(p){const s=p.seasonStats;if(p.pos==='QB')return clamp((s.passYds/2200)*55+(s.passTD/18)*30-(s.passInt/14)*18,0,100);if(p.pos==='RB')return clamp((s.rushYds/900)*65+(s.rushTD/8)*25,0,100);if(['WR','TE'].includes(p.pos))return clamp((s.recYds/850)*65+(s.recTD/7)*25,0,100);if(['DE','DT','LB','CB','S'].includes(p.pos))return clamp((s.tackles/65)*45+(s.sacks/6)*30+(s.defInt/3)*25,0,100);if(p.pos==='K')return s.fgA?clamp((s.fgM/s.fgA)*100,0,100):50;return 50}
+  function ageCurve(p){const a=p.age;if(p.pos==='QB'){if(a<=25)return .4;if(a<=32)return .2;if(a<=34)return -.5;return -1.5}if(p.pos==='RB'){if(a<=23)return .7;if(a<=27)return .2;if(a===28)return -.5;if(a>=29)return -1.6}if(['WR','CB','S'].includes(p.pos)){if(a<=24)return .6;if(a<=28)return .2;if(a>=30)return -1.1;return -.3}if(['OT','G','C','DT'].includes(p.pos)){if(a<=25)return .4;if(a<=31)return .1;if(a>=33)return -1;return -.3}if(a<=25)return .5;if(a>=31)return -1;return 0}
+  function offseasonProgression(){
+    const train=state.facilities.training;state.roster.forEach(p=>{const perf=performanceScore(p),old=p.ovr,oldPot=p.potential;let breakout=false,potBump=0;const age=p.age;const breakoutChance=perf>=78&&age<=28?.35+(perf-78)/80:0;if(Math.random()<breakoutChance){potBump=rint(2,6);p.potential=clamp(p.potential+potBump,60,99);breakout=true}
+      const gap=p.potential-p.ovr,growthPull=gap>10?.8:gap>4?.35:gap<-2?-.45:0,training=(train-1)*.22,performance=(perf-50)/35,random=gauss()*1.15;let delta=Math.round(ageCurve(p)+growthPull+training+performance+random);if(breakout)delta+=rint(1,3);if(age>=32&&p.pos!=='QB')delta=Math.min(delta,1);delta=clamp(delta,-4,5);p.ovr=clamp(p.ovr+delta,55,97);p.age++;p.ratingHistory.push(p.ovr);if(p.ratingHistory.length>12)p.ratingHistory.shift();const dir=delta>0?`+${delta}`:String(delta);let note=`${old} → ${p.ovr} (${dir}). `;if(breakout)note+=`Breakout season raised estimated potential from ${oldPot} to ${p.potential}. `;note+=`Performance score ${Math.round(perf)}, age curve ${ageCurve({...p,age}).toFixed(1)}, Training Level ${train}, plus offseason variance.`;p.lastProgression=note;p.seasonStats=blankStats();p.inSeasonGains=0;p.lastInSeasonProgression='No in-season rating change yet.'})
+  }
+  function projectedOrder(){return [...state.teams].sort((a,b)=>{const ag=(a.user?state.w+state.l:a.w+a.l),bg=(b.user?state.w+state.l:b.w+b.l),ap=ag?(a.user?state.w:a.w)/ag:.5,bp=bg?(b.user?state.w:b.w)/bg:.5;return ap-bp||(a.user?teamRating():a.ovr)-(b.user?teamRating():b.ovr)}).map(t=>t.abbr)}
+  function enterDraft(){if(state.week<=state.schedule.length){switchTab('draft');return}if(!state.draftState){state.draftState={active:true,order:projectedOrder().map((team,i)=>({pick:i+1,team,original:team})),pickIndex:0,picks:[],log:[],offer:null,declinedAt:null,complete:false};simulateCpuVeteranTrade();state.news.unshift(`The ${state.season+1} draft is open. CPU teams can trade with one another, and your pick may draw offers.`)}renderAll();switchTab('draft');saveState()}
+  function finishOffseason(){if(!state.draftState||!state.draftState.complete)return;const oldSeason=state.season;offseasonProgression();advanceConstruction(10);state.season++;state.week=1;state.w=0;state.l=0;state.offHistory=[];state.lastGame=null;state.scoutedWeek=null;state.teams.forEach(t=>{t.w=0;t.l=0;if(!t.user)t.ovr=clamp(t.ovr+rint(-1,2),72,90)});state.schedule=scheduleOrder.map((abbr,i)=>({week:i+1,abbr,result:null,score:null}));Object.keys(state.intel).forEach(k=>state.intel[k]=clamp(Math.round(state.intel[k]*.35)+rint(0,5),0,100));state.draftState=null;state.draftClass=generateDraftClass(state.season+1);state.tradeMarket=makeTradeMarket(state.season+1,state.teams);state.selectedTradeTarget=null;state.selectedTradeAssets=[];autoScoutNext();state.news.unshift(`Season ${state.season} begins after the first playable draft. Offseason progression processed performance, age, hidden potential, facilities and variance.`);state.news.unshift(`The ${oldSeason} offseason advanced capital projects by 10 weeks.`);renderAll();switchTab('home');saveState()}
+  $('#enter-draft').addEventListener('click',enterDraft);
+
+  function renderLeague(){state.teams[0].ovr=teamRating();state.teams[0].w=state.w;state.teams[0].l=state.l;const sorted=[...state.teams].sort((a,b)=>b.w-a.w||a.l-b.l||b.ovr-a.ovr);$('#standings-body').innerHTML=sorted.map(t=>`<tr class="${t.user?'good':''}"><td>${t.name}${t.user?' · YOU':''}</td><td>${t.user?state.w:t.w}</td><td>${t.user?state.l:t.l}</td><td>${t.user?teamRating():t.ovr}</td></tr>`).join('');$('#schedule-body').innerHTML=state.schedule.map(s=>{const o=state.teams.find(t=>t.abbr===s.abbr);return `<tr><td>${s.week}</td><td>${o.name}</td><td>${s.result?`${s.result} ${s.score}`:(s.week===state.week?'NEXT':'—')}</td></tr>`}).join('');
+    const qb=starters('QB')[0],rb=state.roster.filter(p=>p.pos==='RB').sort((a,b)=>b.seasonStats.rushYds-a.seasonStats.rushYds)[0],rec=state.roster.filter(p=>['WR','TE'].includes(p.pos)).sort((a,b)=>b.seasonStats.recYds-a.seasonStats.recYds)[0],def=state.roster.filter(p=>p.group==='DEF').sort((a,b)=>(b.seasonStats.tackles+b.seasonStats.sacks*4+b.seasonStats.defInt*8)-(a.seasonStats.tackles+a.seasonStats.sacks*4+a.seasonStats.defInt*8))[0];const leaders=[qb&&[qb,'Passing',`${qb.seasonStats.passYds} YD · ${qb.seasonStats.passTD} TD`],rb&&[rb,'Rushing',`${rb.seasonStats.rushYds} YD · ${rb.seasonStats.rushTD} TD`],rec&&[rec,'Receiving',`${rec.seasonStats.recYds} YD · ${rec.seasonStats.recTD} TD`],def&&[def,'Defense',`${def.seasonStats.tackles} TKL · ${def.seasonStats.sacks.toFixed(1)} SCK · ${def.seasonStats.defInt} INT`]].filter(Boolean);$('#team-leaders').innerHTML=leaders.map(([p,l,v])=>`<div class="leader"><span class="avatar" aria-hidden="true"></span><div><b>${l}: ${p.name}</b><div class="muted tiny">${p.pos} · OVR ${p.ovr}</div></div><b>${v}</b></div>`).join('');
+    const done=state.week>state.schedule.length;$('#season-end').style.display=done?'block':'none';if(done){const profitText=state.cash>=0?`The franchise finishes with ${money(state.cash)} in cash reserve.`:`The franchise ends ${money(state.cash)} in the red.`;$('#season-summary').innerHTML=`<b>${state.w}-${state.l}</b> final record · Fan approval ${Math.round(state.fans)}%. ${profitText}<div class="muted small" style="margin-top:6px">Enter the offseason to run the live draft. Development and construction will process after the draft is complete.</div>`}}
+
+
+  function userNeeds(){const groups={QB:['QB'],RB:['RB'],REC:['WR','TE'],OL:['OT','G','C'],EDGE:['DE'],IDL:['DT'],LB:['LB'],DB:['CB','S']};return Object.entries(groups).map(([name,pos])=>({name,score:avg(pos.flatMap(x=>starters(x,Math.min(2,state.roster.filter(p=>p.pos===x).length))).map(p=>p.ovr))||65,pos})).sort((a,b)=>a.score-b.score).slice(0,3).flatMap(x=>x.pos)}
+  function needsFor(abbr){return abbr==='CCS'?userNeeds():(state.teams.find(t=>t.abbr===abbr)?.needs||[])}
+  function draftScoutView(p){const l=state.facilities.scouting,spread=[0,6,5,3,2,1][l],bias=Math.round(p.scoutBias*(6-l)/5),center=clamp(p.trueOvr+bias,60,90),estPot=clamp(p.potential+Math.round(p.potBias*(6-l)/5),60,99),stars=potentialStars(estPot),potRange=l<=2?`${Math.max(1,stars-1)}–${Math.min(5,stars+1)}★`:l===3?`${Math.max(1,stars-1)}–${stars}★`:`${stars}★`;return {range:`${center-spread}–${center+spread}`,pot:potRange,clarity:['','Basic','Developing','Solid','Strong','Elite'][l]}}
+  function prospectCpuScore(p,abbr){const t=state.teams.find(x=>x.abbr===abbr),needs=needsFor(abbr),skill=t?.scoutSkill||70,noise=gauss()*Math.max(1,(100-skill)/10),need=needs.includes(p.pos)?8:0,style=t?.draftStyle==='young'?p.potential*.07:0;return p.trueOvr+p.potential*.12+need+style+noise}
+  function availableProspects(){return state.draftClass.filter(p=>!p.drafted)}
+  function bestCpuProspect(abbr){return [...availableProspects()].sort((a,b)=>prospectCpuScore(b,abbr)-prospectCpuScore(a,abbr))[0]}
+  function currentDraftTeam(){const d=state.draftState;return d&&d.order[d.pickIndex]?d.order[d.pickIndex].team:null}
+  function draftCompensation(distance){if(distance<=1)return [{label:`${state.season+2} 3rd-round pick`,value:25}];if(distance<=3)return [{label:`${state.season+2} 2nd-round pick`,value:55}];return [{label:`${state.season+2} 2nd-round pick`,value:55},{label:`${state.season+3} 3rd-round pick`,value:20}]}
+  function maybeCpuTradeUp(){const d=state.draftState,i=d.pickIndex,seller=d.order[i].team;if(seller==='CCS')return false;const sellerBest=bestCpuProspect(seller);if(!sellerBest)return false;let candidates=[];for(let j=i+1;j<d.order.length;j++){const buyer=d.order[j].team;if(buyer==='CCS')continue;const target=bestCpuProspect(buyer),team=state.teams.find(t=>t.abbr===buyer);if(!target||!needsFor(buyer).includes(target.pos))continue;const distance=j-i,aggr=team?.draftStyle==='aggressive'?.58:team?.draftStyle==='young'?.43:team?.draftStyle==='conservative'?.16:.30,urgency=prospectCpuScore(target,buyer)-78-distance*1.2;if(urgency>6&&Math.random()<aggr)candidates.push({j,buyer,target,urgency})}if(!candidates.length)return false;candidates.sort((a,b)=>b.urgency-a.urgency);const c=candidates[0],buyerOld=d.order[c.j].team;d.order[i].team=buyerOld;d.order[c.j].team=seller;const comp=draftCompensation(c.j-i).map(x=>x.label).join(' + ');d.log.unshift(`${buyerOld} trades up from #${c.j+1} to #${i+1} with ${seller}; compensation: ${comp}.`);state.news.unshift(`Draft trade: ${buyerOld} moved up to #${i+1} with ${seller}. CPU teams are negotiating independently.`);return true}
+  function selectProspect(p,abbr){const d=state.draftState;if(!d||p.drafted)return;p.drafted=true;p.draftedBy=abbr;p.pick=d.pickIndex+1;d.picks.push({pick:p.pick,abbr,player:p.name,pos:p.pos});d.log.unshift(`#${p.pick}: ${abbr} selects ${p.name}, ${p.pos} (${p.archetype}).`);if(abbr==='CCS'){const nid=Math.max(0,...state.roster.map(x=>x.id))+1;state.roster.push({id:nid,name:p.name,pos:p.pos,group:['QB','RB','WR','TE','OT','G','C'].includes(p.pos)?'OFF':['K','P'].includes(p.pos)?'ST':'DEF',ovr:p.trueOvr,age:p.age,salary:+(1.1+(9-p.pick)*.08).toFixed(1),trait:p.archetype,potential:p.potential,seasonStats:blankStats(),careerStats:blankStats(),gameLog:[],ratingHistory:[p.trueOvr],lastProgression:'Drafted this offseason.',inSeasonGains:0,lastInSeasonProgression:'No in-season rating change yet.'});state.news.unshift(`Drafted ${p.name} (${p.pos}) at #${p.pick}. His true rookie OVR is now visible on your roster.`)}else{const t=state.teams.find(x=>x.abbr===abbr);if(t&&p.trueOvr>=80)t.ovr=clamp(t.ovr+1,70,92)}d.pickIndex++;d.offer=null;d.declinedAt=null;if(d.pickIndex>=d.order.length){d.complete=true;d.log.unshift('Round 1 complete. Two prospects remain undrafted in this 10-player beta class.');state.news.unshift('The first playable draft is complete. Finish the offseason when you are ready.')}renderAll();saveState()}
+  function cpuDraftStep(){const d=state.draftState;if(!d||d.complete)return;if(currentDraftTeam()==='CCS')return;maybeCpuTradeUp();const team=currentDraftTeam(),p=bestCpuProspect(team);if(p)selectProspect(p,team)}
+  function simToUserPick(){let guard=20;while(state.draftState&&!state.draftState.complete&&currentDraftTeam()!=='CCS'&&guard-->0)cpuDraftStep();renderAll()}
+  function generateUserDraftOffer(){const d=state.draftState;if(!d||d.complete||currentDraftTeam()!=='CCS'||d.offer||d.declinedAt===d.pickIndex)return;let opts=[];for(let j=d.pickIndex+1;j<d.order.length;j++){const abbr=d.order[j].team,target=bestCpuProspect(abbr);if(!target||!needsFor(abbr).includes(target.pos))continue;const urgency=prospectCpuScore(target,abbr)-79-(j-d.pickIndex);if(urgency>5)opts.push({j,abbr,target,urgency})}if(!opts.length||Math.random()>.78)return;opts.sort((a,b)=>b.urgency-a.urgency);const o=opts[0];d.offer={from:o.abbr,fromIndex:o.j,target:o.target.name,comp:draftCompensation(o.j-d.pickIndex)} }
+  function acceptDraftOffer(){const d=state.draftState,o=d?.offer;if(!o)return;const i=d.pickIndex,seller='CCS';d.order[i].team=o.from;d.order[o.fromIndex].team=seller;o.comp.forEach((x,n)=>state.futureAssets.push({id:`bonus-${state.season}-${i}-${n}-${rint(100,999)}`,label:x.label,value:x.value}));d.log.unshift(`CCS trades down from #${i+1} to #${o.fromIndex+1} with ${o.from}; receives ${o.comp.map(x=>x.label).join(' + ')}.`);state.news.unshift(`You traded down to #${o.fromIndex+1}. ${o.from} moved up for ${o.target}.`);d.offer=null;const target=bestCpuProspect(o.from);if(target)selectProspect(target,o.from);else{renderAll();saveState()}}
+  function declineDraftOffer(){const d=state.draftState;if(!d)return;d.declinedAt=d.pickIndex;d.offer=null;renderAll();saveState()}
+  function simulateCpuVeteranTrade(){const avail=state.tradeMarket.filter(x=>x.available);if(avail.length<2||Math.random()>.82)return;const p=pick(avail),seller=p.teamAbbr,buyers=state.teams.filter(t=>!t.user&&t.abbr!==seller),buyer=pick(buyers),v=playerTradeValue(p),pkg=v>165?'a future 1st and 3rd':v>95?'a future 2nd and conditional pick':'two mid-round picks';p.teamAbbr=buyer.abbr;const msg=`${buyer.abbr} acquires ${p.name} (${p.pos}, ${p.ovr} OVR, age ${p.age}) from ${seller} for ${pkg}.`;state.tradeHistory.unshift(msg);if(state.draftState)state.draftState.log.unshift('CPU TRADE: '+msg);state.news.unshift('CPU trade: '+msg)}
+  function playerTradeValue(p){const posMult={QB:1.34,RB:.45,WR:.86,TE:.70,OT:1.02,DE:1.02,DT:.85,LB:.78,CB:1.00,S:.82}[p.pos]||.8,ageMult=p.age<=25?1.18:p.age<=28?1.02:p.age<=31?.83:p.age<=34?.68:.52,base=Math.max(12,(p.ovr-65)*7),upside=Math.max(0,p.potential-p.ovr)*2.2,salaryPenalty=Math.max(0,p.salary-8)*2.2,team=state.teams.find(t=>t.abbr===p.teamAbbr),g=team?team.w+team.l:0,win=g?team.w/g:.5,window=win>.62?1.10:win<.38?.90:1;return clamp(Math.round((base+upside)*posMult*ageMult*window-salaryPenalty),28,305)}
+  function selectedAssetValue(){return state.futureAssets.filter(a=>state.selectedTradeAssets.includes(a.id)).reduce((s,a)=>s+a.value,0)}
+  function tradeMarketLabel(v){if(v>=200)return 'franchise-altering price';if(v>=135)return 'multiple premium assets';if(v>=85)return 'strong Day 1 / Day 2 package';if(v>=50)return 'Day 2 value';return 'mid-round value'}
+  function submitTradeOffer(){const t=state.tradeMarket.find(x=>x.id===state.selectedTradeTarget&&x.available);if(!t){state.lastTradeMessage='Select an available player first.';renderAll();return}const offered=selectedAssetValue(),ask=playerTradeValue(t);if(!offered){state.lastTradeMessage='Select at least one draft asset.';renderAll();return}if(offered>=ask){const used=new Set(state.selectedTradeAssets);state.futureAssets=state.futureAssets.filter(a=>!used.has(a.id));t.available=false;const nid=Math.max(0,...state.roster.map(x=>x.id))+1;state.roster.push({id:nid,name:t.name,pos:t.pos,group:['QB','RB','WR','TE','OT','G','C'].includes(t.pos)?'OFF':'DEF',ovr:t.ovr,age:t.age,salary:t.salary,trait:'Trade Acquisition',potential:t.potential,seasonStats:blankStats(),careerStats:blankStats(),gameLog:[],ratingHistory:[t.ovr],lastProgression:'Acquired via trade.',inSeasonGains:0,lastInSeasonProgression:'No in-season rating change yet.'});state.lastTradeMessage=`Accepted. ${t.teamAbbr} agreed to your package for ${t.name}.`;state.tradeHistory.unshift(`CCS acquires ${t.name} from ${t.teamAbbr} for ${state.selectedTradeAssets.length} future draft asset(s).`);state.selectedTradeAssets=[];state.news.unshift(`Trade accepted: ${t.name} (${t.pos}, ${t.ovr} OVR) joins the Sentinels.`)}else{const ratio=offered/ask;state.lastTradeMessage=ratio>.82?'Rejected, but talks are close. They want one more meaningful piece.':ratio>.55?'Rejected. The framework is interesting, but the value is still light.':'Rejected. The offer is well below what this player is worth to them.'}renderAll();saveState()}
+  function renderDraft(){
+    const year=state.season+1,d=state.draftState;$('#draft-year').textContent=`${year} Draft`;
+    if(!d){const done=state.week>state.schedule.length;$('#draft-status').textContent=done?'The regular season is complete. Open the offseason to lock the draft order and start negotiations.':'The class is live during the season. The order below is a projection based on current records.';$('#draft-controls').innerHTML=done?'<button type="button" class="btn primary" id="draft-enter-here">Open Draft Night</button>':'<button type="button" class="btn" disabled>Draft opens after the season</button>';const b=$('#draft-enter-here');if(b)b.addEventListener('click',enterDraft)}else if(d.complete){$('#draft-status').textContent='Round 1 is complete. Review the picks, trades and remaining prospects before finishing the offseason.';$('#draft-controls').innerHTML='<button type="button" class="btn primary" id="finish-offseason">Finish Offseason & Start Next Season</button>';$('#finish-offseason').addEventListener('click',finishOffseason)}else{const team=currentDraftTeam(),pickNo=d.pickIndex+1;$('#draft-status').innerHTML=`Pick <b>#${pickNo}</b> · <b>${team}</b> is on the clock.`;$('#draft-controls').innerHTML=team==='CCS'?'<span class="pill">Your pick — select from the Big Board below</span>':'<button type="button" class="btn primary" id="advance-cpu">Advance CPU Pick</button><button type="button" class="btn" id="sim-user-pick">Sim to My Pick</button>';const a=$('#advance-cpu');if(a)a.addEventListener('click',cpuDraftStep);const s=$('#sim-user-pick');if(s)s.addEventListener('click',simToUserPick);generateUserDraftOffer()}
+    const prospects=[...state.draftClass].sort((a,b)=>a.boardRank-b.boardRank);$('#draft-board').innerHTML=prospects.map(p=>{const v=draftScoutView(p),canPick=d&&!d.complete&&currentDraftTeam()==='CCS'&&!p.drafted;return `<div class="prospect ${p.drafted?'muted':''}"><div class="prospect-main"><b>#${p.boardRank} ${p.name}</b> · ${p.pos}<div class="prospect-meta"><span class="pill">${p.archetype}</span><span class="pill">OVR est. ${v.range}</span><span class="pill">Ceiling ${v.pot}</span></div><div class="muted tiny" style="margin-top:5px">${p.story} · Scouting clarity: ${v.clarity}${p.drafted?` · Drafted #${p.pick} by ${p.draftedBy}`:''}</div></div>${canPick?`<button type="button" class="btn primary" data-draft-pick="${p.id}">Draft</button>`:''}</div>`}).join('');$$('[data-draft-pick]').forEach(b=>b.addEventListener('click',()=>{const p=state.draftClass.find(x=>x.id===b.dataset.draftPick);if(p)selectProspect(p,'CCS')}));
+    const order=d?d.order.map(x=>x.team):projectedOrder();$('#draft-order').innerHTML=order.map((abbr,i)=>{const pickDone=d&&i<d.pickIndex,on=d&&i===d.pickIndex;const picked=d?.picks.find(x=>x.pick===i+1);return `<div class="draft-order-row ${on?'onclock':''} ${pickDone?'done':''}"><b>#${i+1}</b><div><b>${abbr}${abbr==='CCS'?' · YOU':''}</b>${picked?`<div class="muted tiny">${picked.player} · ${picked.pos}</div>`:''}</div></div>`}).join('');
+    const offer=$('#draft-trade-offer');if(d&&currentDraftTeam()==='CCS'&&d.offer){offer.innerHTML=`<div class="callout"><b>${d.offer.from} wants #${d.pickIndex+1}</b><div class="muted small">They are trying to move up for ${d.offer.target}. You move to #${d.offer.fromIndex+1} and receive ${d.offer.comp.map(x=>x.label).join(' + ')}.</div><div class="actions"><button type="button" class="btn primary" id="accept-draft-trade">Accept</button><button type="button" class="btn" id="decline-draft-trade">Decline</button></div></div>`;$('#accept-draft-trade').addEventListener('click',acceptDraftOffer);$('#decline-draft-trade').addEventListener('click',declineDraftOffer)}else offer.innerHTML=d&&currentDraftTeam()==='CCS'?'<div class="muted tiny">No serious trade-down call is on the table right now.</div>':'';
+    const logs=d?d.log:state.tradeHistory;$('#draft-log').innerHTML=logs?.length?`<div class="draftlog">${logs.slice(0,12).map(x=>`<div class="newsitem">${x}</div>`).join('')}</div>`:'<div class="muted tiny">No league transactions yet.</div>';
+    renderTradeCenter();
+  }
+  function renderTradeCenter(){const market=state.tradeMarket||[];$('#trade-market').innerHTML=`<div class="muted tiny" style="margin-bottom:7px">Featured CPU roster assets. This is a deliberately small first-pass market for testing valuation.</div>`+market.map(t=>{const team=state.teams.find(x=>x.abbr===t.teamAbbr),v=playerTradeValue(t),selected=state.selectedTradeTarget===t.id;return `<div class="trade-target ${selected?'rookie':''} ${!t.available?'muted':''}"><div><b>${t.name}</b> · ${t.pos} · OVR ${t.ovr}<div class="muted tiny">${team?.name||t.teamAbbr} · Age ${t.age} · ${money(t.salary)}/yr · ${tradeMarketLabel(v)}</div></div><button type="button" class="btn" data-trade-target="${t.id}" ${!t.available?'disabled':''}>${!t.available?'Moved':selected?'Selected':'Target'}</button></div>`}).join('');$$('[data-trade-target]').forEach(b=>b.addEventListener('click',()=>{state.selectedTradeTarget=b.dataset.tradeTarget;state.selectedTradeAssets=[];state.lastTradeMessage='';renderDraft();saveState()}));
+    const t=market.find(x=>x.id===state.selectedTradeTarget&&x.available);if(!t){$('#trade-builder').innerHTML=(state.lastTradeMessage?`<div class="callout ${state.lastTradeMessage.startsWith('Accepted')?'goodline':''}">${state.lastTradeMessage}</div>`:'')+'<div class="callout">Select a player to build an offer. Every available target has a finite price; stars simply require much stronger packages.</div>';return}const offered=selectedAssetValue(),ask=playerTradeValue(t),ratio=ask?offered/ask:0,interest=clamp(Math.round(ratio*100),0,100);$('#trade-builder').innerHTML=`<b>Offer for ${t.name}</b><div class="muted small">Seller: ${t.teamAbbr} · Market read: ${tradeMarketLabel(ask)}</div><div class="asset-list">${state.futureAssets.map(a=>`<label class="assetcheck"><input type="checkbox" data-asset="${a.id}" ${state.selectedTradeAssets.includes(a.id)?'checked':''}><span>${a.label}</span></label>`).join('')||'<div class="muted">No future draft assets remain.</div>'}</div><div class="small">CPU interest</div><div class="interest"><span style="width:${interest}%"></span></div><div class="muted tiny" style="margin-top:5px">${interest>=100?'This package is strong enough to close if submitted.':interest>=75?'The framework is close.':interest>=45?'They are listening, but want more.':'This is not close yet.'}</div><div class="actions"><button type="button" class="btn primary" id="submit-trade">Submit Offer</button></div>${state.lastTradeMessage?`<div class="callout ${state.lastTradeMessage.startsWith('Accepted')?'goodline':''}">${state.lastTradeMessage}</div>`:''}`;$$('[data-asset]').forEach(c=>c.addEventListener('change',()=>{const id=c.dataset.asset;if(c.checked&&!state.selectedTradeAssets.includes(id))state.selectedTradeAssets.push(id);if(!c.checked)state.selectedTradeAssets=state.selectedTradeAssets.filter(x=>x!==id);renderTradeCenter();saveState()}));$('#submit-trade').addEventListener('click',submitTradeOffer)}
+
+  function openPlayer(id){state.selectedPlayer=id;state.playerTab='season';renderPlayerDialog();const d=$('#player-dialog');d.classList.add('open');d.setAttribute('aria-hidden','false');document.body.classList.add('modal-open');setTimeout(function(){const c=$('#dialog-close');if(c)c.focus()},0)}
+  function renderPlayerDialog(){const p=state.roster.find(x=>x.id===state.selectedPlayer);if(!p)return;$('#dialog-player-head').innerHTML=`<div style="display:flex;align-items:center"><span class="avatar" aria-hidden="true"></span><div><b>${p.name}</b><div class="muted small">${p.pos} · OVR ${p.ovr} · Age ${p.age} · ${p.trait}</div></div></div>`;$$('[data-player-tab]').forEach(b=>b.classList.toggle('active',b.dataset.playerTab===state.playerTab));const body=$('#dialog-player-body');if(state.playerTab==='season'){body.innerHTML=`<h3>Season ${state.season}</h3><div class="callout goodline"><b>${statLine(p)}</b></div><div class="muted small" style="margin-top:8px">This screen will expand as more position-specific stats are added.</div>`}else if(state.playerTab==='career'){body.innerHTML=`<h3>Career Totals</h3><div class="callout"><b>${statLine(p,p.careerStats)}</b></div><div class="muted small" style="margin-top:8px">Career totals persist across seasons in this save.</div>`}else if(state.playerTab==='gamelog'){const logs=[...p.gameLog].reverse();body.innerHTML=logs.length?`<div class="tablewrap"><table><thead><tr><th>Season</th><th>Week</th><th>Opp</th><th>Line</th></tr></thead><tbody>${logs.map(g=>`<tr><td>${g.season}</td><td>${g.week}</td><td>${g.opp}</td><td>${g.line}</td></tr>`).join('')}</tbody></table></div>`:'<div class="muted">No game log yet.</div>'}else{const hist=p.ratingHistory||[p.ovr],min=Math.min(...hist,55),max=Math.max(...hist,95),range=Math.max(1,max-min);body.innerHTML=`<h3>Development</h3><div class="kpis"><div class="kpi"><span class="muted small">Current OVR</span><b>${p.ovr}</b></div><div class="kpi"><span class="muted small">Potential estimate</span><b>${potentialDisplay(p)}</b></div><div class="kpi"><span class="muted small">Age</span><b>${p.age}</b></div><div class="kpi"><span class="muted small">Training level</span><b>${state.facilities.training}</b></div></div><div class="spark" aria-label="Rating history">${hist.map(v=>`<span title="${v}" style="height:${20+((v-min)/range)*50}px"></span>`).join('')}</div><div class="progress-note"><b>In-season development:</b><div class="muted small">${p.lastInSeasonProgression||'No in-season rating change yet.'}</div></div><div class="progress-note"><b>Last offseason:</b><div class="muted small">${p.lastProgression||'No offseason progression yet.'}</div></div><div class="muted tiny" style="margin-top:8px">Potential influences probabilities; it is not a hard promise or a guaranteed cap. Exceptional performance can sometimes raise the estimate.</div>`}}
+  function closePlayer(){const d=$('#player-dialog');d.classList.remove('open');d.setAttribute('aria-hidden','true');document.body.classList.remove('modal-open')}
+  safeTap($('#dialog-close'),closePlayer);$('#player-dialog').addEventListener('click',function(e){if(e.target===$('#player-dialog'))closePlayer()},false);$$('[data-player-tab]').forEach(function(b){b.addEventListener('click',function(){state.playerTab=b.dataset.playerTab;renderPlayerDialog()},false)});
+
+  function renderManagement(){$('#auto-scout').checked=!!state.autoScout;$('#exact-potential').checked=!!state.showExactPotential}
+  $('#auto-scout').addEventListener('change',e=>{state.autoScout=e.target.checked;saveState()});$('#exact-potential').addEventListener('change',e=>{state.showExactPotential=e.target.checked;renderRoster();if($('#player-dialog').classList.contains('open'))renderPlayerDialog();saveState()});
+  $('#reset-save').addEventListener('click',()=>{if(confirm('Reset this Beta 0.3 franchise and erase the local save?')){state=newState();try{localStorage.removeItem(SAVE_KEY)}catch(e){}renderAll();switchTab('home');saveState()}});
+
+  function renderAll(){renderHeader();$('#off-plan').value=state.offPlan||'balanced';$('#def-plan').value=state.defPlan||'balanced';renderHome();renderRoster();renderScouting();renderFacilities();renderLeague();renderDraft();renderManagement();renderGamePlanNote();showGameResult();const opp=currentOpp();$('#sim-game').disabled=!opp;$('#sim-game').textContent=opp?`Simulate Week ${state.week}`:'Season Complete';saveState()}
+  renderAll();
+})();
+</script>
+
+</body>
+</html>
