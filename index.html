@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-<title>Gridiron Dynasty Beta 0.6.1</title>
+<title>Gridiron Dynasty Beta 0.6.2</title>
 <meta name="theme-color" content="#0f1115" />
 <meta name="color-scheme" content="dark" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -115,12 +115,33 @@
   @media(max-width:760px){.development-tools{grid-template-columns:1fr 1fr}.development-tools>div:last-child{grid-column:1/-1}.draft-filterbar{grid-template-columns:1fr}.record-grid{grid-template-columns:1fr}.coach-snapshot{grid-template-columns:1fr}.playoff-bracket{grid-template-columns:1fr}.bracket-arrow{transform:rotate(90deg)}}
 
 
-  /* Beta 0.6.1 cross-platform input compatibility */
+  /* Beta 0.6.2 cross-platform input compatibility */
   button, select, input, [role="button"] { touch-action: manipulation; -webkit-tap-highlight-color: rgba(255,255,255,.08); }
   button { -webkit-appearance: none; appearance: none; }
   .compat-error { margin:12px 0; padding:12px 14px; border:1px solid #b84c4c; border-radius:10px; background:rgba(184,76,76,.12); color:inherit; font-size:14px; line-height:1.4; }
+
+
+  /* Beta 0.6.2 · first-run tutorial */
+  .tutorial-backdrop{position:fixed;inset:0;z-index:1400;background:rgba(0,0,0,.76);display:none;padding:max(12px,env(safe-area-inset-top)) max(10px,env(safe-area-inset-right)) max(12px,env(safe-area-inset-bottom)) max(10px,env(safe-area-inset-left));overflow-y:auto;-webkit-overflow-scrolling:touch}
+  .tutorial-backdrop.open{display:flex;align-items:center;justify-content:center}
+  .tutorial-card{width:min(680px,100%);background:#17191d;border:1px solid var(--border);border-radius:18px;box-shadow:0 26px 90px rgba(0,0,0,.62);overflow:hidden}
+  .tutorial-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:16px 16px 12px;border-bottom:1px solid var(--border)}
+  .tutorial-body{padding:16px}
+  .tutorial-kicker{font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);font-weight:800;margin-bottom:5px}
+  .tutorial-title{font-size:1.25rem;font-weight:900;line-height:1.15;margin:0}
+  .tutorial-copy{color:var(--text);font-size:.95rem;line-height:1.5;margin:0}
+  .tutorial-copy + .tutorial-copy{margin-top:10px}
+  .tutorial-points{display:grid;gap:8px;margin:14px 0 0;padding:0;list-style:none}
+  .tutorial-points li{padding:9px 10px;border:1px solid var(--border);background:var(--panel);border-radius:10px;font-size:.88rem;line-height:1.4}
+  .tutorial-actions{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 16px 16px;border-top:1px solid var(--border);flex-wrap:wrap}
+  .tutorial-actions .right{display:flex;gap:8px;flex-wrap:wrap;margin-left:auto}
+  .tutorial-progress{color:var(--muted);font-size:.8rem}
+  .tutorial-dots{display:flex;gap:5px;margin-top:10px}.tutorial-dot{width:18px;height:5px;border-radius:99px;background:var(--border)}.tutorial-dot.on{background:var(--accent)}
+  #tutorial-open{width:100%}
+  @media(max-width:520px){.tutorial-backdrop.open{align-items:flex-end}.tutorial-card{border-radius:18px 18px 10px 10px}.tutorial-body{padding:14px}.tutorial-actions{padding:10px 14px max(14px,env(safe-area-inset-bottom))}.tutorial-title{font-size:1.15rem}}
+
 </style>
-<!-- Gridiron Dynasty Beta 0.6.1: Safari/Chrome compatibility build -->
+<!-- Gridiron Dynasty Beta 0.6.2: Safari/Chrome compatibility build -->
 </head>
 <body>
 <div id="gd" class="app">
@@ -129,17 +150,18 @@
     <div class="logo" aria-hidden="true">CCS</div>
     <div style="min-width:0">
       <div class="teamname">Capital City Sentinels</div>
-      <div class="subline"><span class="pill" id="season-pill">Season 2026 · Week 1</span><span class="pill" id="record-pill">0-0</span><span class="pill">Beta 0.6.1</span></div>
+      <div class="subline"><span class="pill" id="season-pill">Season 2026 · Week 1</span><span class="pill" id="record-pill">0-0</span><span class="pill">Beta 0.6.2</span></div>
     </div>
   </header>
 
   <div class="menu-backdrop" id="menu-backdrop" aria-hidden="true">
     <aside class="drawer" aria-label="Navigation">
-      <div class="drawerhead"><div><b>Gridiron Dynasty</b><div class="muted tiny">Pro Franchise Beta 0.6.1 · iPhone / Android Compatibility Fix</div></div><button type="button" class="iconbtn" id="menu-close" aria-label="Close navigation">×</button></div>
+      <div class="drawerhead"><div><b>Gridiron Dynasty</b><div class="muted tiny">Pro Franchise Beta 0.6.2 · iPhone / Android Compatibility Fix</div></div><button type="button" class="iconbtn" id="menu-close" aria-label="Close navigation">×</button></div>
       <div class="menu-section">Play</div>
       <nav>
         <button type="button" data-tab="home" aria-current="page">🏠 Home</button>
         <button type="button" data-tab="gameday">🏈 Game Day</button>
+        <button type="button" id="tutorial-open">❓ Tutorial / How to Play</button>
       </nav>
       <div class="menu-section">Personnel</div>
       <nav>
@@ -324,7 +346,7 @@
         <div class="card span-6"><div class="coach"><div class="portrait">EN</div><div><b>Eli Navarro</b><div class="muted small">Offensive Coordinator · Age 31</div></div></div><div class="small" style="margin-top:10px">Creative, impatient, loves explosive passes and fourth-down aggression.</div><div class="ability"><b>Ability · Explosive Sequencing</b><div class="muted tiny">Adds a small offensive efficiency bonus when the saved identity is Pass Heavy or Vertical Attack.</div></div></div>
         <div class="card span-6"><div class="coach"><div class="portrait">RM</div><div><b>Roy Mercer</b><div class="muted small">Defensive Coordinator · Age 58</div></div></div><div class="small" style="margin-top:10px">Stubborn, blunt with media, respected because his defenses usually work.</div><div class="ability"><b>Ability · Film Discipline</b><div class="muted tiny">When opponent scouting confidence reaches 70+, the defense receives a small preparation bonus.</div></div></div>
         <div class="card span-6"><div class="coach"><div class="portrait">DW</div><div><b>Dana Whitaker</b><div class="muted small">General Manager · Age 44</div></div></div><div class="small" style="margin-top:10px">Patient roster builder who would rather understand a class than chase consensus blindly.</div><div class="ability"><b>Ability · Board Builder</b><div class="muted tiny">Adds one prospect visit to each draft cycle. Higher Scouting Department levels make every visit reveal more.</div></div></div>
-        <div class="card span-12"><h2>Beta Save</h2><div class="muted small">Beta 0.6.1 is the same 0.6 gameplay build with a compatibility pass for iPhone Safari, Android Chrome, and desktop browsers. Saves remain compatible with Beta 0.6.</div><div class="actions"><button type="button" class="btn bad" id="reset-save">Reset Franchise</button></div></div>
+        <div class="card span-12"><h2>Beta Save</h2><div class="muted small">Beta 0.6.2 is the same 0.6 gameplay build with a compatibility pass for iPhone Safari, Android Chrome, and desktop browsers. Saves remain compatible with Beta 0.6.</div><div class="actions"><button type="button" class="btn bad" id="reset-save">Reset Franchise</button></div></div>
       </div>
     </section>
 
@@ -341,6 +363,22 @@
     </section>
   </main>
 
+
+
+  <div class="tutorial-backdrop" id="tutorial-dialog" aria-hidden="true">
+    <section class="tutorial-card" role="dialog" aria-modal="true" aria-labelledby="tutorial-title">
+      <div class="tutorial-head">
+        <div><div class="tutorial-kicker" id="tutorial-kicker">Getting Started</div><h2 class="tutorial-title" id="tutorial-title">Welcome to Gridiron Dynasty</h2></div>
+        <button type="button" class="iconbtn" id="tutorial-close" aria-label="Close tutorial">×</button>
+      </div>
+      <div class="tutorial-body" id="tutorial-body"></div>
+      <div class="tutorial-actions">
+        <div><div class="tutorial-progress" id="tutorial-progress">1 of 6</div><div class="tutorial-dots" id="tutorial-dots" aria-hidden="true"></div></div>
+        <div class="right"><button type="button" class="btn" id="tutorial-back">Back</button><button type="button" class="btn" id="tutorial-skip">Skip</button><button type="button" class="btn primary" id="tutorial-next">Next</button></div>
+      </div>
+    </section>
+  </div>
+
   <div class="player-modal-backdrop" id="player-dialog" aria-hidden="true">
     <section class="player-modal" role="dialog" aria-modal="true" aria-label="Player details">
       <div class="dialogtop"><div id="dialog-player-head"></div><button type="button" class="iconbtn" id="dialog-close" aria-label="Close player">×</button></div>
@@ -349,7 +387,7 @@
     </section>
   </div>
 
-  <div class="footer">Fictional league and players. Beta 0.6.1 keeps all Beta 0.6 gameplay and adds a cross-platform compatibility layer for iPhone Safari, Android Chrome, and desktop browsers.</div>
+  <div class="footer">Fictional league and players. Beta 0.6.2 keeps the 0.6 gameplay loop and 0.6.1 compatibility work, and adds a first-run tutorial explaining how to play and what Gridiron Dynasty is trying to become.</div>
 </div>
 <script>
 (function(){
@@ -2593,7 +2631,7 @@
         return; if (!((_b = state.freeAgency) === null || _b === void 0 ? void 0 : _b.complete)) {
         switchTab('draft');
         return;
-    } archiveSeason06(); finishOffseason05For06(); trimCpuRosters06(); state.freeAgency = null; state.gameHistory = state.gameHistory || []; state.news.unshift(`Beta 0.6.1 history rolled into Season ${state.season}: five-round draft, career snapshots and league transactions persist.`); renderAll(); saveState(); };
+    } archiveSeason06(); finishOffseason05For06(); trimCpuRosters06(); state.freeAgency = null; state.gameHistory = state.gameHistory || []; state.news.unshift(`Beta 0.6.2 history rolled into Season ${state.season}: five-round draft, career snapshots and league transactions persist.`); renderAll(); saveState(); };
     function renderFinance06() {
         const k = $('#finance-page-kpis');
         if (!k)
@@ -2627,7 +2665,7 @@
             const dev = state.developmentProcessedSeason === state.season;
             const fa = (_d = state.freeAgency) === null || _d === void 0 ? void 0 : _d.complete;
             if (done && post && dev && !fa) {
-                $('#draft-status').textContent = 'Development is complete. Free agency comes before the five-round draft in Beta 0.6.1.';
+                $('#draft-status').textContent = 'Development is complete. Free agency comes before the five-round draft in Beta 0.6.2.';
                 $('#draft-controls').innerHTML = '<button type="button" class="btn primary" id="draft-open-fa06">Open / Continue Free Agency</button>';
                 const b = $('#draft-open-fa06');
                 if (b)
@@ -2696,6 +2734,90 @@
     const renderAll05For06 = renderAll;
     renderAll = function () { renderAll05For06(); renderGameHistory06(); renderFreeAgency06(); renderFinance06(); renderNavStatus06(); saveState(); };
     renderAll();
+})();
+
+
+
+(function(){
+  'use strict';
+  var SEEN_KEY='gridiron_dynasty_tutorial_0_6_2_seen';
+  var dialog=document.getElementById('tutorial-dialog');
+  if(!dialog)return;
+  var kicker=document.getElementById('tutorial-kicker');
+  var title=document.getElementById('tutorial-title');
+  var body=document.getElementById('tutorial-body');
+  var progress=document.getElementById('tutorial-progress');
+  var dots=document.getElementById('tutorial-dots');
+  var next=document.getElementById('tutorial-next');
+  var back=document.getElementById('tutorial-back');
+  var skip=document.getElementById('tutorial-skip');
+  var close=document.getElementById('tutorial-close');
+  var open=document.getElementById('tutorial-open');
+  var index=0;
+  var steps=[
+    {
+      kicker:'The Vision',
+      title:'What Gridiron Dynasty wants to be',
+      copy:'Gridiron Dynasty is a long-term fictional pro-football franchise simulator. The goal is not just to win the next game. It is to build an organization and watch an entire league create its own history around you.',
+      points:['Play casually from the Home screen or dive into the roster, scouting, finances, facilities, trades and draft.','Players, teams and eventually coaches are meant to develop, decline, adapt and create stories over decades.','No two long saves should feel exactly the same: great picks, bad trades, surprise stars, aging veterans and changing league trends are the point.']
+    },
+    {
+      kicker:'Your Job',
+      title:'Run one franchise inside a living league',
+      copy:'You control the Capital City Sentinels, but the league is not supposed to revolve around you. CPU teams have rosters, needs, records, draft picks and transactions of their own.',
+      points:['Use My Roster for your team and League Rosters to search every player in the league.','Open player cards to check ratings, attributes, stats, history and development.','The long-term design is GM + coach + owner decisions without requiring you to micromanage everything.']
+    },
+    {
+      kicker:'The Home Screen',
+      title:'Home is your franchise dashboard',
+      copy:'Home is intentionally a snapshot, not a forever-scroll. It shows the information you need most and gives you a fast way to keep the season moving.',
+      points:['Quick Sim Week advances the current game using your saved game plans.','Game Day lets you change offensive and defensive emphasis before simming.','Sim to Postseason is useful when you want to test long-term progression, regression, drafts and league evolution quickly.']
+    },
+    {
+      kicker:'Build the Team',
+      title:'Roster, scouting, trades and the draft',
+      copy:'Personnel decisions are the heart of the franchise loop. Ratings matter, but age, potential, attributes, scouting information and team direction matter too.',
+      points:['Scouting gives you better information instead of perfect knowledge.','Draft classes contain 88 prospects across five rounds, with room for steals, reaches and misses.','League Rosters can help you spot trade targets, including older veterans who may still have one strong year left.']
+    },
+    {
+      kicker:'Build the Organization',
+      title:'Winning is not only about player OVR',
+      copy:'Financials, facilities and staff are designed to become connected football decisions, not separate menus that hand out automatic bonuses.',
+      points:['Facilities cost cash and affect areas such as development, health, scouting and revenue.','Financials track revenue, operating costs, construction, scouting and game-by-game cash flow.','Management is the foundation for deeper coach, coordinator, GM and scout abilities in later versions.']
+    },
+    {
+      kicker:'The Franchise Loop',
+      title:'Play seasons, then live with your decisions',
+      copy:'The current loop is regular season → playoffs → development/regression → free agency → combine/scouting → five-round draft → next season. That loop is the foundation we will keep deepening.',
+      points:['You can replay this tutorial at any time from the hamburger menu under Play.','Beta 0.6.2 is still a test build, so some deeper systems are intentionally coming later.','The destination is a football universe with schemes, smarter coaches, richer game simulation, league records, generational players and memorable multi-decade history.']
+    }
+  ];
+  function esc(s){return String(s).replace(/[&<>\"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function render(){
+    var s=steps[index];
+    kicker.textContent=s.kicker;
+    title.textContent=s.title;
+    var h='<p class="tutorial-copy">'+esc(s.copy)+'</p><ul class="tutorial-points">';
+    for(var i=0;i<s.points.length;i++)h+='<li>'+esc(s.points[i])+'</li>';
+    h+='</ul>';
+    body.innerHTML=h;
+    progress.textContent=(index+1)+' of '+steps.length;
+    var d=''; for(var j=0;j<steps.length;j++)d+='<span class="tutorial-dot'+(j===index?' on':'')+'"></span>'; dots.innerHTML=d;
+    back.disabled=index===0;
+    next.textContent=index===steps.length-1?'Start Playing':'Next';
+    skip.style.display=index===steps.length-1?'none':'inline-block';
+  }
+  function show(start){index=typeof start==='number'?start:0;render();dialog.classList.add('open');dialog.setAttribute('aria-hidden','false');document.body.classList.add('modal-open');}
+  function hide(markSeen){dialog.classList.remove('open');dialog.setAttribute('aria-hidden','true');document.body.classList.remove('modal-open');if(markSeen){try{localStorage.setItem(SEEN_KEY,'1');}catch(e){}}}
+  if(open)open.addEventListener('click',function(){var mc=document.getElementById('menu-close');if(mc)mc.click();show(0);},false);
+  next.addEventListener('click',function(){if(index<steps.length-1){index++;render();}else{hide(true);}},false);
+  back.addEventListener('click',function(){if(index>0){index--;render();}},false);
+  skip.addEventListener('click',function(){hide(true);},false);
+  close.addEventListener('click',function(){hide(true);},false);
+  dialog.addEventListener('click',function(e){if(e.target===dialog)hide(true);},false);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&dialog.classList.contains('open'))hide(true);},false);
+  var seen=false; try{seen=localStorage.getItem(SEEN_KEY)==='1';}catch(e){}
+  if(!seen){window.setTimeout(function(){show(0);},180);}
 })();
 
 </script>
