@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-<title>Gridiron Dynasty Beta 0.6.2</title>
+<title>Gridiron Dynasty Beta 0.7.2</title>
 <meta name="theme-color" content="#0f1115" />
 <meta name="color-scheme" content="dark" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -140,8 +140,45 @@
   #tutorial-open{width:100%}
   @media(max-width:520px){.tutorial-backdrop.open{align-items:flex-end}.tutorial-card{border-radius:18px 18px 10px 10px}.tutorial-body{padding:14px}.tutorial-actions{padding:10px 14px max(14px,env(safe-area-inset-bottom))}.tutorial-title{font-size:1.15rem}}
 
+
+  /* Beta 0.7 */
+  .sim-strip07{display:flex;justify-content:flex-end;gap:8px;align-items:center;margin:0 0 10px;flex-wrap:wrap}
+  .sim-strip07 .pill{border-color:#66511d;color:#fbbf24;background:#2b2414}
+  .scheme-grid07{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .scheme-card07{border:1px solid var(--border);border-radius:11px;padding:10px;background:var(--panel)}
+  .scheme-card07.active{border-color:var(--warn);box-shadow:inset 0 0 0 1px rgba(245,158,11,.18)}
+  .fit-chip07{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--border);border-radius:999px;padding:4px 8px;font-size:.75rem;margin:3px 4px 0 0}
+  .dev-reason07{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px}
+  .attr-delta07{display:grid;grid-template-columns:1fr auto auto;gap:7px;padding:6px 0;border-bottom:1px solid var(--border);font-size:.8rem}.attr-delta07:last-child{border-bottom:0}
+  .playoff-home07 .mini-round07{display:grid;gap:5px;margin-top:7px}.mini-match07{padding:7px 9px;border:1px solid var(--border);border-radius:9px;background:var(--panel);font-size:.78rem}
+  .devlab07{border-color:#66511d}.devlab07 .lab-grid07{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:10px}.devlab07 .btn{width:100%}
+  .stress-report07{margin-top:10px;padding:10px;border:1px solid var(--border);background:var(--panel);border-radius:10px}
+  .nav-phase07{display:block;color:#fbbf24;font-size:.68rem;margin-top:2px;font-weight:700;letter-spacing:.02em}
+  .development-tools07{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:10px}
+  @media(max-width:760px){.scheme-grid07{grid-template-columns:1fr}.devlab07 .lab-grid07{grid-template-columns:1fr 1fr}.development-tools07{grid-template-columns:1fr 1fr}}
 </style>
 <!-- Gridiron Dynasty Beta 0.6.2: Safari/Chrome compatibility build -->
+
+<style id="beta071-css">
+/* Beta 0.7.2 · stability + box-score readability patch */
+.drawer nav button{overflow:hidden}
+.drawer nav button .nav-phase071{display:block;color:#fbbf24;font-size:.68rem;line-height:1.2;margin-top:3px;font-weight:700;letter-spacing:.02em;white-space:normal}
+.boxscore071{margin-top:10px}
+.box-tabs071{display:flex;gap:7px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:2px 0 8px;scrollbar-width:thin}
+.box-tabs071 button{flex:0 0 auto;min-height:42px;border:1px solid var(--border);background:var(--panel);color:var(--text);border-radius:999px;padding:8px 13px;font:inherit;font-size:.82rem;cursor:pointer;touch-action:manipulation}
+.box-tabs071 button.active{border-color:var(--accent);background:var(--accentbg);color:#e8f7ff;font-weight:700}
+.box-panel071[hidden]{display:none!important}
+.box-panel071 .boxgrid{margin-top:4px}
+.box-summary071{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.box-team071{border:1px solid var(--border);background:var(--panel);border-radius:12px;padding:12px}
+.box-team071 .score071{font-size:1.8rem;font-weight:800;line-height:1}
+.box-kpis071{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-top:10px}
+.box-kpis071>div{border-top:1px solid var(--border);padding-top:7px}
+.box-kpis071 span{display:block;color:var(--muted);font-size:.7rem}
+.box-kpis071 b{font-size:.9rem}
+@media(max-width:680px){.box-summary071,.box-panel071 .boxgrid{grid-template-columns:1fr}.box-tabs071{margin-right:-4px}.box-kpis071{grid-template-columns:repeat(3,minmax(0,1fr))}}
+</style>
+
 </head>
 <body>
 <div id="gd" class="app">
@@ -150,13 +187,13 @@
     <div class="logo" aria-hidden="true">CCS</div>
     <div style="min-width:0">
       <div class="teamname">Capital City Sentinels</div>
-      <div class="subline"><span class="pill" id="season-pill">Season 2026 · Week 1</span><span class="pill" id="record-pill">0-0</span><span class="pill">Beta 0.6.2</span></div>
+      <div class="subline"><span class="pill" id="season-pill">Season 2026 · Week 1</span><span class="pill" id="record-pill">0-0</span><span class="pill">Beta 0.7.2</span></div>
     </div>
   </header>
 
   <div class="menu-backdrop" id="menu-backdrop" aria-hidden="true">
     <aside class="drawer" aria-label="Navigation">
-      <div class="drawerhead"><div><b>Gridiron Dynasty</b><div class="muted tiny">Pro Franchise Beta 0.6.2 · iPhone / Android Compatibility Fix</div></div><button type="button" class="iconbtn" id="menu-close" aria-label="Close navigation">×</button></div>
+      <div class="drawerhead"><div><b>Gridiron Dynasty</b><div class="muted tiny">Pro Franchise Beta 0.7.2 · Stability & Box Score Patch</div></div><button type="button" class="iconbtn" id="menu-close" aria-label="Close navigation">×</button></div>
       <div class="menu-section">Play</div>
       <nav>
         <button type="button" data-tab="home" aria-current="page">🏠 Home</button>
@@ -182,7 +219,7 @@
         <button type="button" data-tab="league">🏆 League</button>
       </nav>
       <div class="menu-section">Coming later</div>
-      <div class="muted small" style="padding:0 8px">0.6 makes individual games memorable with box scores and history, expands the draft to five rounds, adds a first-pass free-agency market and speeds up long-save testing.</div>
+      <div class="muted small" style="padding:0 8px">0.7 makes team identities matter through schemes, expands the draft to seven rounds, adds league-wide career arcs, and includes a beta Testing Lab. Free-agency market and speeds up long-save testing.</div>
     </aside>
   </div>
 
@@ -230,8 +267,8 @@
 
     <section class="panel" data-panel="gameday">
       <div class="grid">
-        <div class="card span-6"><h2>Offensive Game Plan</h2><label for="off-plan">Primary identity</label><select id="off-plan"><option value="balanced">Balanced</option><option value="run">Run Heavy</option><option value="short">Quick / Short Pass</option><option value="pass">Pass Heavy</option><option value="vertical">Vertical Attack</option></select><div id="gameplan-note" class="callout"></div></div>
-        <div class="card span-6"><h2>Defensive Game Plan</h2><label for="def-plan">Primary approach</label><select id="def-plan"><option value="balanced">Balanced</option><option value="contain">Keep Everything in Front</option><option value="runstop">Sell Out vs Run</option><option value="blitz">Pressure / Blitz Heavy</option></select><div class="muted small" style="margin-top:10px">Your coordinators use this as the weekly emphasis. Full play calling comes later.</div></div>
+        <div class="card span-6"><h2>Offensive Game Plan</h2><label for="off-plan">Primary identity</label><select id="off-plan"><option value="balanced">Balanced Multiple</option><option value="run">Ground & Pound</option><option value="short">West Coast</option><option value="pass">Rhythm Pass</option><option value="vertical">Vertical Attack</option><option value="spread">Spread Tempo</option></select><div id="gameplan-note" class="callout"></div></div>
+        <div class="card span-6"><h2>Defensive Game Plan</h2><label for="def-plan">Primary approach</label><select id="def-plan"><option value="balanced">Multiple Front</option><option value="contain">Quarters Shell</option><option value="runstop">Run-First Front</option><option value="blitz">Pressure Package</option><option value="man">Press Man</option><option value="cover2">Cover 2 Zone</option></select><div class="muted small" style="margin-top:10px">Your coordinators use this as the weekly emphasis. Full play calling comes later.</div></div>
         <div class="card span-7"><h2>Opponent Scouting Report</h2><div id="opponent-scout"></div><div class="actions"><button type="button" class="btn" id="gameday-scout">Assign Extra Scouting</button></div></div>
         <div class="card span-5"><h2>Kickoff</h2><div class="muted small">This beta still uses full-game simulation so we can focus on the management systems first.</div><div class="actions"><button type="button" class="btn primary" id="sim-game">Simulate Week 1</button></div></div>
         <div class="card span-12" id="game-result-card" style="display:none"><h2>Final</h2><div class="scorebox"><div><b>CCS</b><div class="score" id="final-score-us">0</div></div><div><div id="final-result" class="result">—</div><div class="muted tiny" id="final-opponent">Opponent</div></div><div><b id="final-opp-abbr">OPP</b><div class="score" id="final-score-them">0</div></div></div><div class="kpis" style="margin-top:10px"><div class="kpi"><span class="muted small">Total yards</span><b id="stat-yards">0</b></div><div class="kpi"><span class="muted small">Rush yards</span><b id="stat-rush">0</b></div><div class="kpi"><span class="muted small">Pass yards</span><b id="stat-pass">0</b></div><div class="kpi"><span class="muted small">Net cash flow</span><b id="stat-profit">$0</b></div></div><div id="game-finance-breakdown" class="callout" style="margin-top:10px"></div><div id="boxscore-detail" style="margin-top:12px"></div></div>
@@ -286,8 +323,8 @@
           <div class="actions" id="draft-controls"></div><div id="draft-scouting-tools" style="margin-top:10px"></div>
         </div>
         <div class="card span-7">
-          <h2>Big Board · 88 Prospects</h2>
-          <div class="muted small" style="margin-bottom:10px">Five rounds, 80 selections, and eight likely priority free agents. Consensus broadly tracks talent, but sleepers, reaches and busts are deliberately possible.</div>
+          <h2>Big Board · 124 Prospects</h2>
+          <div class="muted small" style="margin-bottom:10px">Seven rounds, 112 selections, and a deeper priority-free-agent pool. Specialists are normally late-round values; sleepers, reaches and busts remain possible.</div>
           <div class="draft-filterbar"><div><label for="draft-pos-filter">Position</label><select id="draft-pos-filter"><option value="ALL">All</option><option>QB</option><option>RB</option><option>WR</option><option>TE</option><option>OT</option><option>G</option><option>C</option><option>DE</option><option>DT</option><option>LB</option><option>CB</option><option>S</option><option>K</option><option>P</option></select></div><label class="compact-check"><input id="draft-show-all" type="checkbox"> Show full board</label></div><div id="draft-board"></div>
         </div>
         <div class="card span-5">
@@ -346,7 +383,7 @@
         <div class="card span-6"><div class="coach"><div class="portrait">EN</div><div><b>Eli Navarro</b><div class="muted small">Offensive Coordinator · Age 31</div></div></div><div class="small" style="margin-top:10px">Creative, impatient, loves explosive passes and fourth-down aggression.</div><div class="ability"><b>Ability · Explosive Sequencing</b><div class="muted tiny">Adds a small offensive efficiency bonus when the saved identity is Pass Heavy or Vertical Attack.</div></div></div>
         <div class="card span-6"><div class="coach"><div class="portrait">RM</div><div><b>Roy Mercer</b><div class="muted small">Defensive Coordinator · Age 58</div></div></div><div class="small" style="margin-top:10px">Stubborn, blunt with media, respected because his defenses usually work.</div><div class="ability"><b>Ability · Film Discipline</b><div class="muted tiny">When opponent scouting confidence reaches 70+, the defense receives a small preparation bonus.</div></div></div>
         <div class="card span-6"><div class="coach"><div class="portrait">DW</div><div><b>Dana Whitaker</b><div class="muted small">General Manager · Age 44</div></div></div><div class="small" style="margin-top:10px">Patient roster builder who would rather understand a class than chase consensus blindly.</div><div class="ability"><b>Ability · Board Builder</b><div class="muted tiny">Adds one prospect visit to each draft cycle. Higher Scouting Department levels make every visit reveal more.</div></div></div>
-        <div class="card span-12"><h2>Beta Save</h2><div class="muted small">Beta 0.6.2 is the same 0.6 gameplay build with a compatibility pass for iPhone Safari, Android Chrome, and desktop browsers. Saves remain compatible with Beta 0.6.</div><div class="actions"><button type="button" class="btn bad" id="reset-save">Reset Franchise</button></div></div>
+        <div class="card span-12"><h2>Beta Save</h2><div class="muted small">Beta 0.7.2 fixes progression/regression report integrity while preserving the 0.7 football-identity update: seven draft rounds, scheme matchups, league-wide development, player attribute deltas, a playoff Home hub, and a beta testing lab. Beta 0.6 saves migrate forward.</div><div class="actions"><button type="button" class="btn bad" id="reset-save">Reset Franchise</button></div></div>
       </div>
     </section>
 
@@ -387,7 +424,7 @@
     </section>
   </div>
 
-  <div class="footer">Fictional league and players. Beta 0.6.2 keeps the 0.6 gameplay loop and 0.6.1 compatibility work, and adds a first-run tutorial explaining how to play and what Gridiron Dynasty is trying to become.</div>
+  <div class="footer">Fictional league and players. Beta 0.7.2 fixes navigation duplication and adds tabbed box scores while preserving the 0.7 schemes, seven-round draft, league-wide career arcs and stress-testing tools.</div>
 </div>
 <script>
 (function(){
@@ -435,8 +472,8 @@
     const money = (n) => { const sign = n < 0 ? '-' : ''; return sign + '$' + Math.abs(Number(n) || 0).toFixed(1) + 'M'; };
     const pct = (n) => Math.round(clamp(n, 0, 100)) + '%';
     const deepClone = (o) => JSON.parse(JSON.stringify(o));
-    const SAVE_KEY = 'gridiron_dynasty_beta_0_6_save_v1';
-    const OLD_SAVE_KEYS = ['gridiron_dynasty_beta_0_5_save_v1', 'gridiron_dynasty_beta_0_45_save_v1', 'gridiron_dynasty_beta_0_4_save_v1', 'gridiron_dynasty_beta_0_3_save_v1', 'gridiron_dynasty_beta_0_2_save_v1'];
+    const SAVE_KEY = 'gridiron_dynasty_beta_0_7_save_v1';
+    const OLD_SAVE_KEYS = ['gridiron_dynasty_beta_0_6_save_v1', 'gridiron_dynasty_beta_0_5_save_v1', 'gridiron_dynasty_beta_0_45_save_v1', 'gridiron_dynasty_beta_0_4_save_v1', 'gridiron_dynasty_beta_0_3_save_v1', 'gridiron_dynasty_beta_0_2_save_v1'];
     const teamDefs = [
         { name: 'Capital City Sentinels', abbr: 'CCS', ovr: 80, user: true, weak: 'short', style: 'balanced', needs: ['OT', 'CB'], draftStyle: 'balanced', scoutSkill: 72, coach: { name: 'Marcus Hale', age: 38, philosophy: 'Adaptive program builder', ability: 'Developmental Patience', devPos: ['QB', 'WR', 'CB'], level: 1 } },
         { name: 'Baltimore Admirals', abbr: 'BAL', ovr: 83, weak: 'run', style: 'physical', rumorWeak: 'deep', needs: ['WR', 'CB'], draftStyle: 'aggressive', scoutSkill: 76, coach: { name: 'Damon Price', age: 51, philosophy: 'Physical control football', ability: 'Trench Standard', devPos: ['OT', 'G', 'C', 'DT', 'DE'], level: 1 } },
@@ -2202,7 +2239,7 @@
             }
         }
         else if (d.complete) {
-            $('#draft-status').textContent = 'Five rounds are complete. Review the picks and eight-player undrafted pool before starting the next season.';
+            $('#draft-status').textContent = 'Seven rounds are complete. Review all 112 picks and the remaining priority free agents before starting the next season.';
             $('#draft-controls').innerHTML = '<button type="button" class="btn primary" id="finish-offseason">Finish Offseason & Start Next Season</button>';
             $('#finish-offseason').addEventListener('click', finishOffseason);
         }
@@ -2226,7 +2263,7 @@
             prospects = prospects.filter(p => !p.drafted).slice(0, 28).concat(state.draftClass.filter(p => p.drafted).sort((a, b) => b.pick - a.pick).slice(0, 4));
         $('#draft-board').innerHTML = prospects.map(p => { const v = draftScoutView(p), canPick = d && !d.complete && currentDraftTeam() === 'CCS' && !p.drafted, canScout = draftVisitAvailable() && state.draftScoutVisits > 0 && !p.drafted && (p.scoutLevel || 0) < 3, projection = projectedRound05(p.boardRank); return `<div class="prospect ${p.drafted ? 'muted' : ''}"><div class="prospect-main"><b>#${p.boardRank} ${p.name}</b> · ${p.pos} <span class="round-badge">${projection}</span><div class="prospect-meta"><span class="pill">${p.archetype}</span><span class="pill">OVR est. ${v.range}</span><span class="pill">Ceiling ${v.pot}</span></div>${v.attrs.length ? `<div class="prospect-attrs">${v.attrs.map(a => `<span class="pill">${a.label} ${a.value}</span>`).join('')}</div>` : ''}${state.combineComplete ? `<div class="muted tiny" style="margin-top:5px">Combine: ${combineLine(p)}</div>` : ''}<div class="muted tiny" style="margin-top:5px">${p.story} · Report: ${v.clarity} · Visits ${p.scoutLevel || 0}/3${p.drafted ? ` · Drafted R${p.round} #${p.roundPick} by ${p.draftedBy}` : ''}</div></div><div class="actions" style="margin-top:0">${canScout ? `<button type="button" class="btn" data-scout-prospect="${p.id}">Scout</button>` : ''}${canPick ? `<button type="button" class="btn primary" data-draft-pick="${p.id}">Draft</button>` : ''}</div></div>`; }).join('');
         if (!state.draftShowAll && state.draftClass.length > prospects.length)
-            $('#draft-board').innerHTML += `<div class="muted tiny" style="padding-top:8px">Board condensed for readability. Use “Show full board” to inspect all 88 prospects.</div>`;
+            $('#draft-board').innerHTML += `<div class="muted tiny" style="padding-top:8px">Board condensed for readability. Use “Show full board” to inspect all 124 prospects.</div>`;
         $$('[data-scout-prospect]').forEach(b => b.addEventListener('click', () => scoutProspect(b.dataset.scoutProspect)));
         $$('[data-draft-pick]').forEach(b => b.addEventListener('click', () => { const p = state.draftClass.find(x => x.id === b.dataset.draftPick); if (p)
             selectProspect(p, 'CCS'); }));
@@ -2683,11 +2720,11 @@
             }
         }
         else if (state.draftState.complete) {
-            $('#draft-status').textContent = 'Five rounds are complete. Review all 80 picks and the remaining priority free agents before starting next season.';
+            $('#draft-status').textContent = 'Seven rounds are complete. Review all 112 picks and the remaining priority free agents before starting next season.';
         }
         const msg = (_e = $('#draft-board')) === null || _e === void 0 ? void 0 : _e.lastElementChild;
         if (msg && msg.classList.contains('muted') && msg.textContent.includes('54'))
-            msg.textContent = 'Board condensed for readability. Use “Show full board” to inspect all 88 prospects.';
+            msg.textContent = 'Board condensed for readability. Use “Show full board” to inspect all 124 prospects.';
     };
     const renderLeague05For06 = renderLeague;
     renderLeague = function () { renderLeague05For06(); const games = state.gameHistory || []; $$('#schedule-body tr').forEach((tr, i) => { const sched = state.schedule[i], g = games.find(x => x.season === state.season && x.week === (sched === null || sched === void 0 ? void 0 : sched.week)); if (g) {
@@ -2734,13 +2771,344 @@
     const renderAll05For06 = renderAll;
     renderAll = function () { renderAll05For06(); renderGameHistory06(); renderFreeAgency06(); renderFinance06(); renderNavStatus06(); saveState(); };
     renderAll();
+
+    /* ===== Beta 0.7: football identity, career arcs, seven rounds, testing lab ===== */
+    const aging07 = {
+        QB:{prime:[25,34],soft:35,cliff:39,phys:['speed','acceleration','agility','throwPower']},
+        RB:{prime:[22,26],soft:27,cliff:30,phys:['speed','acceleration','agility','elusiveness','strength']},
+        WR:{prime:[23,28],soft:29,cliff:33,phys:['speed','acceleration','agility','release']},
+        TE:{prime:[24,29],soft:30,cliff:34,phys:['speed','agility','strength','release']},
+        OT:{prime:[25,31],soft:32,cliff:35,phys:['strength','agility','acceleration']},
+        G:{prime:[25,31],soft:32,cliff:35,phys:['strength','agility','acceleration']},
+        C:{prime:[25,32],soft:33,cliff:36,phys:['strength','agility','acceleration']},
+        DE:{prime:[24,29],soft:30,cliff:33,phys:['speed','acceleration','strength','agility']},
+        DT:{prime:[25,30],soft:31,cliff:34,phys:['strength','acceleration','agility']},
+        LB:{prime:[24,28],soft:29,cliff:32,phys:['speed','acceleration','agility','strength']},
+        CB:{prime:[22,27],soft:28,cliff:31,phys:['speed','acceleration','agility']},
+        S:{prime:[23,28],soft:29,cliff:33,phys:['speed','acceleration','agility']},
+        K:{prime:[25,35],soft:36,cliff:41,phys:['kickPower']},
+        P:{prime:[25,35],soft:36,cliff:41,phys:['puntPower']}
+    };
+    const offSchemes07={
+        balanced:{name:'Balanced Multiple',desc:'No single answer defines the offense. Flexible week to week; smaller matchup highs and lows.',ideal:'Versatile roster · smart QB · balanced line'},
+        run:{name:'Ground & Pound',desc:'Heavy rushing, play-action and physical line play. Punishes light boxes and deep shells.',ideal:'Strong OL · durable RB · blocking TE'},
+        short:{name:'West Coast',desc:'Quick timing throws, yards after catch and high completion football. A natural answer to pressure.',ideal:'Accurate QB · route runners · receiving backs'},
+        pass:{name:'Rhythm Pass',desc:'Intermediate concepts and repeated chain-moving throws. More aggressive than West Coast without living on bombs.',ideal:'Accurate QB · separators · pass-pro OL'},
+        vertical:{name:'Vertical Attack',desc:'Stress safeties and corners downfield. Explosive when protected; sacks and turnovers become real risks.',ideal:'Arm talent · speed WRs · pass protection'},
+        spread:{name:'Spread Tempo',desc:'Create space, force defenders to declare, and distribute quickly from wide formations.',ideal:'Mobile/quick QB · space athletes · athletic OL'}
+    };
+    const defSchemes07={
+        balanced:{name:'Multiple Front',desc:'Change fronts and coverages without leaning on one answer. Flexible, but rarely a hard counter.'},
+        contain:{name:'Quarters Shell',desc:'Keep explosives in front with four-deep structure. Vulnerable to patient run games and underneath volume.'},
+        runstop:{name:'Run-First Front',desc:'Extra bodies and aggressive run fits. Strong versus power football, exposed by spacing and play action.'},
+        blitz:{name:'Pressure Package',desc:'Manufacture pressure and force quick decisions. Can wreck weak protection but gives up explosives when beaten.'},
+        man:{name:'Press Man',desc:'Challenge releases and timing with tight man coverage. Elite corners make it nasty; motion and space can stress it.'},
+        cover2:{name:'Cover 2 Zone',desc:'Protect the sidelines and deep halves while rallying underneath. Patient seams and run games can find space.'}
+    };
+    function arc07(p){
+        if(!p.careerArc){p.careerArc={longevity:clamp(.5+gauss()*.18,.05,.98),volatility:clamp(.5+gauss()*.20,.08,.98),lateBloom:clamp(.42+gauss()*.22,.02,.95),durability:clamp(.55+gauss()*.18,.08,.98)};}
+        return p.careerArc;
+    }
+    function migrate07(s){
+        s.devMode=!!s.devMode; s.devVolatility=Number(s.devVolatility)||1; s.devStressReport=s.devStressReport||null;
+        s.developmentScope=s.developmentScope||'LEAGUE'; s.developmentPos07=s.developmentPos07||'ALL'; s.developmentHistory=s.developmentHistory||[];
+        s.chiefScout=s.chiefScout||{name:'Jordan Pike',specialty:'QB',level:1,ability:'Quarterback Guru'};
+        s.weeklyProspectScout07=Number(s.weeklyProspectScout07)||0;
+        s.teams.forEach(function(t,i){
+            if(!t.offScheme)t.offScheme=({physical:'run',aggressive:'vertical',young:'spread',disciplined:'short',pressure:'balanced',conservative:'short',balanced:'balanced'}[t.style]||'balanced');
+            if(!t.defScheme)t.defScheme=({physical:'runstop',aggressive:'man',young:'contain',disciplined:'cover2',pressure:'blitz',conservative:'contain',balanced:'balanced'}[t.style]||'balanced');
+        });
+        s.roster.forEach(function(p){arc07(p); p.attrDevelopment=p.attrDevelopment||[];});
+        Object.keys(s.leagueRosters||{}).forEach(function(a){(s.leagueRosters[a]||[]).forEach(function(p){arc07(p);p.attrDevelopment=p.attrDevelopment||[];});});
+        (s.draftClass||[]).forEach(function(p){if(!p.careerArc)p.careerArc={longevity:clamp(.5+gauss()*.18,.05,.98),volatility:clamp(.5+gauss()*.20,.08,.98),lateBloom:clamp(.42+gauss()*.22,.02,.95),durability:clamp(.55+gauss()*.18,.08,.98)};});
+        return s;
+    }
+    migrate07(state);
+    // 0.7.2: development-report integrity. The Change column must always equal new OVR - old OVR,
+    // including reports carried forward from older saves where rating recalculation could leave a stale stored delta.
+    function normalizeDevelopmentDeltas072(s){
+        function fixRows(rows){(rows||[]).forEach(function(r){
+            if(r && Number.isFinite(Number(r.oldOvr)) && Number.isFinite(Number(r.newOvr))) r.delta=Number(r.newOvr)-Number(r.oldOvr);
+        });}
+        if(s.offseasonDevelopment)fixRows(s.offseasonDevelopment.rows);
+        (s.developmentHistory||[]).forEach(function(h){fixRows(h&&h.rows);});
+        (s.roster||[]).forEach(function(p){(p.attrDevelopment||[]).forEach(function(r){if(r&&Number.isFinite(Number(r.oldOvr))&&Number.isFinite(Number(r.newOvr)))r.delta=Number(r.newOvr)-Number(r.oldOvr);});});
+        Object.keys(s.leagueRosters||{}).forEach(function(a){(s.leagueRosters[a]||[]).forEach(function(p){(p.attrDevelopment||[]).forEach(function(r){if(r&&Number.isFinite(Number(r.oldOvr))&&Number.isFinite(Number(r.newOvr)))r.delta=Number(r.newOvr)-Number(r.oldOvr);});});});
+        return s;
+    }
+    normalizeDevelopmentDeltas072(state);
+    const newState06For07=newState;
+    newState=function(){const s=migrate07(newState06For07());s.draftClass=generateDraftClass(s.season+1);return s;};
+
+    function styleLabel07(v){return offSchemes07[v]?offSchemes07[v].name:(defSchemes07[v]?defSchemes07[v].name:v);}
+    styleLabel=styleLabel07;
+    function schemeMatch07(off,def){
+        const m={
+            run:{contain:2.6,cover2:1.6,runstop:-2.8,blitz:-.4,man:.8,balanced:.2},
+            short:{blitz:2.4,contain:1.2,cover2:.4,runstop:1.0,man:-1.0,balanced:.3},
+            pass:{runstop:2.1,contain:.5,cover2:.4,blitz:-1.1,man:-.9,balanced:.2},
+            vertical:{runstop:2.3,balanced:.3,man:-.2,cover2:-1.2,blitz:-1.4,contain:-2.1},
+            spread:{runstop:2.6,contain:.8,cover2:.5,blitz:.3,balanced:.2,man:-1.5},
+            balanced:{runstop:.1,contain:.1,cover2:.1,blitz:.1,man:.1,balanced:0}
+        };
+        return ((m[off]||{})[def]||0);
+    }
+    function schemeFit07(p,scheme){
+        ensureAttributes(p); const a=p.attributes||{}; let score=75;
+        if(p.pos==='QB'){
+            if(scheme==='short')score=(a.throwAccuracy*.42+a.awareness*.28+a.agility*.12+a.acceleration*.08+a.throwPower*.10);
+            else if(scheme==='vertical')score=(a.throwPower*.38+a.throwAccuracy*.23+a.awareness*.17+a.strength*.05+a.acceleration*.08+a.agility*.09);
+            else if(scheme==='spread')score=(a.throwAccuracy*.28+a.awareness*.20+a.acceleration*.17+a.agility*.17+a.speed*.08+a.throwPower*.10);
+            else score=(a.throwAccuracy*.28+a.throwPower*.20+a.awareness*.25+a.agility*.10+a.acceleration*.08+a.strength*.09);
+        } else if(p.pos==='RB'){
+            if(scheme==='run')score=a.strength*.22+a.awareness*.18+a.elusiveness*.18+a.acceleration*.15+a.speed*.12+a.agility*.15;
+            else if(scheme==='spread'||scheme==='short')score=a.catching*.18+a.routeRunning*.16+a.elusiveness*.20+a.speed*.14+a.acceleration*.14+a.agility*.18;
+            else score=a.elusiveness*.22+a.speed*.17+a.acceleration*.17+a.awareness*.16+a.agility*.18+a.strength*.10;
+        } else if(p.pos==='WR'||p.pos==='TE'){
+            if(scheme==='vertical')score=a.speed*.22+a.acceleration*.18+a.release*.18+a.catching*.18+a.routeRunning*.14+a.awareness*.10;
+            else if(scheme==='short'||scheme==='spread')score=a.routeRunning*.24+a.catching*.22+a.release*.15+a.awareness*.15+a.agility*.12+a.acceleration*.12;
+            else score=a.routeRunning*.20+a.catching*.20+a.release*.14+a.awareness*.14+a.speed*.12+a.acceleration*.10+a.agility*.10;
+        } else if(['OT','G','C'].includes(p.pos)){
+            if(scheme==='run')score=a.runBlock*.38+a.strength*.25+a.awareness*.20+a.agility*.10+a.acceleration*.07;
+            else if(['vertical','pass'].includes(scheme))score=a.passBlock*.40+a.awareness*.24+a.strength*.18+a.agility*.11+a.acceleration*.07;
+            else score=a.runBlock*.24+a.passBlock*.27+a.awareness*.22+a.strength*.17+a.agility*.06+a.acceleration*.04;
+        } else score=p.ovr;
+        return clamp(Math.round(score),50,99);
+    }
+    function teamFit07(abbr,side,scheme){
+        const rs=abbr==='CCS'?state.roster:leagueRoster(abbr); const relevant=side==='off'?rs.filter(function(p){return p.group==='OFF';}):rs.filter(function(p){return p.group==='DEF';});
+        if(!relevant.length)return 75;
+        if(side==='off')return Math.round(avg(relevant.sort(function(a,b){return b.ovr-a.ovr;}).slice(0,11).map(function(p){return schemeFit07(p,scheme);}))); return Math.round(avg(relevant.sort(function(a,b){return b.ovr-a.ovr;}).slice(0,11).map(function(p){return p.ovr;})));
+    }
+    function eliteMitigation07(abbr,side){
+        const rs=abbr==='CCS'?state.roster:leagueRoster(abbr); const pos=side==='def'?['DE','DT','LB','CB','S']:['QB','RB','WR','TE','OT','G','C'];
+        const stars=rs.filter(function(p){return pos.includes(p.pos)&&p.ovr>=90;}).length; return clamp(1-stars*.09,.55,1);
+    }
+    const simulateGame06For07=simulateGame;
+    simulateGame=function(mode='deep'){
+        const opp=currentOpp(); if(!opp)return;
+        const userOff=state.offPlan||'balanced',userDef=state.defPlan||'balanced',oppOff=opp.offScheme||'balanced',oppDef=opp.defScheme||'balanced';
+        let offEdge=schemeMatch07(userOff,oppDef),defEdge=-schemeMatch07(oppOff,userDef);
+        if(offEdge>0)offEdge*=eliteMitigation07(opp.abbr,'def'); if(defEdge>0)defEdge*=eliteMitigation07(opp.abbr,'off');
+        const fit=(teamFit07('CCS','off',userOff)-75)/12; const coach=(Number((coachProfile05('CCS')||{}).level)||1)*.18;
+        let net=clamp(offEdge*.58+defEdge*.52+fit*.45+coach-.18,-3.8,3.8);
+        const oldOvr=opp.ovr,storedOff=state.offPlan; opp.ovr=clamp(oldOvr-net,65,96); if(storedOff==='spread')state.offPlan='pass';
+        simulateGame06For07(mode);
+        state.offPlan=storedOff; opp.ovr=oldOvr;
+        if(state.offHistory&&state.offHistory.length&&storedOff==='spread')state.offHistory[state.offHistory.length-1]='spread';
+        if(state.lastGame){state.lastGame.off=storedOff;state.lastGame.schemeNote={userOff:userOff,userDef:userDef,oppOff:oppOff,oppDef:oppDef,offEdge:+offEdge.toFixed(1),defEdge:+defEdge.toFixed(1),net:+net.toFixed(1),fit:teamFit07('CCS','off',userOff)};}
+        const gh=state.gameHistory&&state.gameHistory[state.gameHistory.length-1]; if(gh&&gh.season===state.season){gh.schemeNote=state.lastGame&&state.lastGame.schemeNote;}
+        renderAll(); saveState();
+    };
+    const simOtherGames06For07=simOtherGames;
+    simOtherGames=function(exclude){
+        const others=state.teams.filter(function(t){return !t.user&&t.abbr!==exclude;});
+        for(let i=0;i<others.length-1;i+=2){const a=others[i],b=others[i+1];if(!b)break;const aEdge=schemeMatch07(a.offScheme||'balanced',b.defScheme||'balanced')-schemeMatch07(b.offScheme||'balanced',a.defScheme||'balanced');const ar=cpuTeamOvr(a.abbr)+coachGameBonus05(a)+aEdge*.32,br=cpuTeamOvr(b.abbr)+coachGameBonus05(b)-aEdge*.32,p=1/(1+Math.exp(-(ar-br)/6));if(Math.random()<p){a.w++;b.l++;}else{b.w++;a.l++;}}
+    };
+
+    function perfFromStats07(p,s){s=s||{};if(p.pos==='QB')return clamp((s.passYds/3600)*48+(s.passTD/28)*36-(s.passInt/14)*12,0,100);if(p.pos==='RB')return clamp((s.rushYds/1100)*56+(s.rushTD/9)*24+(s.recYds/400)*20,0,100);if(['WR','TE'].includes(p.pos))return clamp((s.recYds/1050)*62+(s.recTD/8)*28+(s.rec/75)*10,0,100);if(['DE','DT','LB','CB','S'].includes(p.pos))return clamp((s.tackles/70)*40+(s.sacks/7)*32+(s.defInt/3)*28,0,100);if(['OT','G','C'].includes(p.pos))return 55;return 50;}
+    function recentPerf07(p){const vals=[performanceScore(p)];const h=(p.seasonHistory||[]).slice(-2);h.forEach(function(x){vals.push(perfFromStats07(p,x.stats));});return {now:vals[0],avg:avg(vals),poor:vals.filter(function(x){return x<43;}).length,strong:vals.filter(function(x){return x>=72;}).length};}
+    function ageSignal07(p){
+        const c=aging07[p.pos]||aging07.LB,a=p.age,arc=arc07(p),shift=(arc.longevity-.5)*5; const soft=c.soft+shift,cliff=c.cliff+shift;
+        if(a<c.prime[0])return .55+(arc.lateBloom-.5)*.25; if(a<=c.prime[1]+shift*.35)return .16; if(a<soft)return -.10;
+        if(a<cliff)return -.45-(a-soft)*.24; return -1.15-(a-cliff)*.38;
+    }
+    function attrSnapshot07(p){const o={};Object.keys(p.attributes||{}).forEach(function(k){o[k]=p.attributes[k];});return o;}
+    function attrChanges07(before,after){const rows=[];Object.keys(after||{}).forEach(function(k){const d=(after[k]||0)-(before[k]||0);if(d)rows.push({key:k,label:attrLabels[k]||k,delta:d,old:before[k]||0,new:after[k]||0});});return rows.sort(function(a,b){return Math.abs(b.delta)-Math.abs(a.delta);});}
+    function requestedDev07(p,teamAbbr){
+        const perf=recentPerf07(p),gap=p.potential-p.ovr,arc=arc07(p),age=ageSignal07(p),isUser=teamAbbr==='CCS',train=isUser?(state.facilities.training||1):1,medical=isUser?(state.facilities.medical||1):1;
+        let potential=gap>12?.85:gap>6?.45:gap>1?.12:gap<0?-.38:0;
+        let performance=(perf.avg-52)/23; if(p.age<=25&&perf.poor)performance=Math.max(performance,-.35);
+        if(p.age>=27&&perf.poor>=2)performance-=.75; if(p.age>=29&&perf.poor>=2)performance-=.35;
+        if(perf.strong>=2&&p.age>=27)performance+=.45;
+        const facilities=(train-1)*.16+(medical-1)*(p.age>=aging07[p.pos].soft?.08:.025);
+        const coach=isUser?(((coachProfile05('CCS').devPos||[]).includes(p.pos))?.28:0):cpuCoachDevBonus05(state.teams.find(function(t){return t.abbr===teamAbbr;}),p)*.30;
+        const volatility=(Number(state.devVolatility)||1)*(0.75+arc.volatility*.65),variance=gauss()*.88*volatility;
+        let raw=age+potential+performance+facilities+coach+variance;
+        let delta=Math.round(raw); const ageRisk=p.age>=aging07[p.pos].soft;
+        if(ageRisk&&perf.poor>=2&&Math.random()<clamp(.18+(p.age-aging07[p.pos].soft)*.08+(1-arc.longevity)*.32,.10,.72))delta-=rint(1,2);
+        if(perf.strong>=2&&delta<0)delta+=1;
+        if(p.age<=25)delta=Math.max(delta,-2);
+        delta=clamp(delta,-6,6);
+        return {delta:delta,parts:{age:+age.toFixed(2),performance:+performance.toFixed(2),potential:+potential.toFixed(2),facilities:+facilities.toFixed(2),coach:+coach.toFixed(2),variance:+variance.toFixed(2)},perf:perf};
+    }
+    function applyDev07(p,req){
+        ensureAttributes(p);const before=attrSnapshot07(p),old=p.ovr,weights=relevantAttrs(p.pos),arc=arc07(p),c=aging07[p.pos]||aging07.LB;
+        if(req>0){for(let n=0;n<Math.abs(req);n++){weights.slice(0,6).forEach(function(k,i){if(i<2||Math.random()<.52)p.attributes[k]=clamp((p.attributes[k]||50)+1,35,99);});}}
+        if(req<0){for(let n=0;n<Math.abs(req);n++){let physical=(c.phys||[]).filter(function(k){return Object.prototype.hasOwnProperty.call(p.attributes,k);}); if(!physical.length)physical=physicalRegressionKeys05(p); physical.slice(0,3).forEach(function(k,i){if(i<2||Math.random()<.72)p.attributes[k]=clamp(p.attributes[k]-1,35,99);}); if(n>0&&Math.random()<.50){weights.filter(function(k){return !physical.includes(k);}).slice(0,2).forEach(function(k){if(Math.random()<.42)p.attributes[k]=clamp(p.attributes[k]-1,35,99);});}}
+            if(p.age>=28&&p.attributes.awareness<97&&Math.random()<.50)p.attributes.awareness+=1;
+        }
+        p.ovr=calculatedOverall(p);
+        if(req>0&&p.ovr<=old){p.attributes[weights[0]]=clamp(p.attributes[weights[0]]+1,35,99);p.ovr=calculatedOverall(p);}
+        if(req<0&&p.ovr>=old){const k=((c.phys||[]).find(function(x){return weights.includes(x);})||weights[0]);p.attributes[k]=clamp(p.attributes[k]-1,35,99);p.ovr=calculatedOverall(p);}
+        return {actual:p.ovr-old,changes:attrChanges07(before,p.attributes)};
+    }
+    function developPlayer07(p,teamAbbr){
+        const old=p.ovr,oldAge=p.age,oldPot=p.potential,dec=requestedDev07(p,teamAbbr); let breakout=false;
+        if(dec.perf.now>=82&&p.age<=29&&Math.random()<.16+(dec.perf.now-82)*.012+arc07(p).lateBloom*.10){p.potential=clamp(p.potential+rint(2,5),60,99);breakout=true;dec.delta=Math.max(dec.delta,1)+1;}
+        const applied=applyDev07(p,dec.delta),actual=applied.actual; p.age++;p.ratingHistory=p.ratingHistory||[old];p.ratingHistory.push(p.ovr);if(p.ratingHistory.length>25)p.ratingHistory.shift();
+        const reasons=[]; if(dec.parts.age<-.35)reasons.push('age/position curve'); if(dec.perf.poor>=2&&oldAge>=27)reasons.push('multi-year poor form'); if(dec.perf.strong>=2)reasons.push('sustained production'); if(dec.parts.facilities>.15)reasons.push('facility support'); if(dec.parts.coach>.15)reasons.push('coach development fit'); if(breakout)reasons.push('breakout ceiling reassessment'); if(!reasons.length)reasons.push(actual===0?'stable career phase':'normal career variance');
+        p.lastAttrChanges07=applied.changes;p.attrDevelopment=p.attrDevelopment||[];p.attrDevelopment.push({season:state.season,team:teamAbbr,oldOvr:old,newOvr:p.ovr,delta:actual,changes:applied.changes,reasons:reasons,parts:dec.parts});if(p.attrDevelopment.length>12)p.attrDevelopment.shift();
+        p.lastProgression=`${old} → ${p.ovr} (${actual>0?'+':''}${actual}). ${reasons.join(', ')}.`;
+        return {id:p.id,name:p.name,pos:p.pos,team:teamAbbr,age:p.age,oldAge:oldAge,oldOvr:old,newOvr:p.ovr,delta:actual,breakout:breakout,reasons:reasons.join(' · '),reasonList:reasons,parts:dec.parts,attrChanges:applied.changes,oldPotential:oldPot,newPotential:p.potential};
+    }
+    processOffseasonDevelopment05=function(){
+        if(state.developmentProcessedSeason===state.season&&state.offseasonDevelopment)return; updateRecordBook05(); const rows=[];
+        state.roster.forEach(function(p){rows.push(developPlayer07(p,'CCS'));});
+        state.teams.filter(function(t){return !t.user;}).forEach(function(team){const games=(team.w||0)+(team.l||0),wp=games?(team.w||0)/games:.5;team.coach=team.coach||{};team.coach.level=clamp((Number(team.coach.level)||1)+(wp>=.67?.14:wp<=.33?-.06:.03),.7,3);leagueRoster(team.abbr).forEach(function(p){rows.push(developPlayer07(p,team.abbr));});});
+        state.offseasonDevelopment={season:state.season,rows:rows,created:true,leagueWide:true}; state.developmentProcessedSeason=state.season;state.offseasonStage='development';advanceOffseasonConstruction05('development');
+        state.developmentHistory=state.developmentHistory||[];state.developmentHistory.push({season:state.season,rows:deepClone(rows)});if(state.developmentHistory.length>20)state.developmentHistory.shift();
+        state.news.unshift(`League development report: ${rows.filter(function(r){return r.delta>0;}).length} improved, ${rows.filter(function(r){return r.delta<0;}).length} regressed, ${rows.filter(function(r){return r.breakout;}).length} breakouts across all 16 clubs.`);
+    };
+    renderDevelopment05=function(){
+        const pill=$('#development-season-pill'),summary=$('#development-summary'),body=$('#development-body'),actions=$('#development-actions');if(!pill||!summary||!body||!actions)return;const report=state.offseasonDevelopment;
+        if(!report||state.developmentProcessedSeason!==state.season){pill.textContent='Awaiting offseason';summary.innerHTML='<div class="callout">The formal league-wide progression/regression pass runs after the championship. In 0.7, age is a probability curve rather than a fixed cliff: position, recent performance, hidden career arc, coaching, facilities and variance all interact.</div>';body.innerHTML='<tr><td colspan="6" class="muted">No offseason development report yet.</td></tr>';actions.innerHTML='';return;}
+        pill.textContent=`Season ${report.season} → ${report.season+1}`;let all=(report.rows||[]).map(function(r){const actual=Number(r.newOvr)-Number(r.oldOvr);if(Number.isFinite(actual))r.delta=actual;return r;});const up=all.filter(function(r){return r.delta>0;}).length,down=all.filter(function(r){return r.delta<0;}).length,hard=all.filter(function(r){return r.delta<=-3;}).length,big=all.filter(function(r){return r.delta>=3;}).length;
+        summary.innerHTML=`<div class="kpis"><div class="kpi"><span class="muted small">League risers</span><b class="good">${up}</b></div><div class="kpi"><span class="muted small">League fallers</span><b class="badtext">${down}</b></div><div class="kpi"><span class="muted small">Big jumps +3</span><b>${big}</b></div><div class="kpi"><span class="muted small">Hard drops -3</span><b>${hard}</b></div></div><div class="callout" style="margin-top:10px">Change is now calculated directly from the displayed ratings: new OVR minus old OVR. If a player goes 68 → 73, the report must show +5; if a player goes 82 → 77, it must show -5.</div>`;
+        const f=state.developmentFilter||'ALL',teamScope=state.developmentScope||'LEAGUE',pos=state.developmentPos07||'ALL',sort=state.developmentSort||'delta';let rows=all.filter(function(r){return (teamScope==='LEAGUE'||r.team==='CCS')&&(pos==='ALL'||r.pos===pos)&&(f==='ALL'||(f==='UP'&&r.delta>0)||(f==='DOWN'&&r.delta<0)||(f==='BREAKOUT'&&r.breakout));});
+        rows.sort(function(a,b){return sort==='name'?a.name.localeCompare(b.name):sort==='age'?b.age-a.age:sort==='ovr'?b.newOvr-a.newOvr:Math.abs(b.delta)-Math.abs(a.delta);});
+        body.innerHTML=rows.slice(0,260).map(function(r){const d=Number(r.newOvr)-Number(r.oldOvr);return `<tr><td><button type="button" class="teamlink" data-dev07="${r.id}" data-devteam07="${r.team}">${r.name}</button><div class="muted tiny">${r.team}</div></td><td>${r.pos}</td><td>${r.age}</td><td>${r.oldOvr} → <b>${r.newOvr}</b></td><td class="${d>0?'dev-up':d<0?'dev-down':'dev-flat'}">${d>0?'+':''}${d}${r.breakout?' ★':''}</td><td class="muted tiny">${r.reasons}${r.attrChanges&&r.attrChanges.length?`<div>${r.attrChanges.slice(0,3).map(function(x){return `${x.label} ${x.delta>0?'+':''}${x.delta}`;}).join(' · ')}</div>`:''}</td></tr>`;}).join('')||'<tr><td colspan="6" class="muted">No players match this filter.</td></tr>';
+        $$('[data-dev07]').forEach(function(b){b.addEventListener('click',function(){openPlayer(b.dataset.dev07,b.dataset.devteam07);});});actions.innerHTML=state.draftState?'':'<button type="button" class="btn primary" id="continue-draft-prep">Continue to Draft Prep</button>';const c=$('#continue-draft-prep');if(c)c.addEventListener('click',function(){state.offseasonStage='draftPrep';switchTab('draft');renderDraft();saveState();});
+    };
+
+    // Seven-round, 124-player class. Specialists live late unless they are truly unusual.
+    function draftPool07(){const counts={QB:8,RB:9,WR:16,TE:7,OT:10,G:7,C:5,DE:10,DT:8,LB:10,CB:13,S:9,K:1,P:1},a=[];Object.keys(counts).forEach(function(p){for(let i=0;i<counts[p];i++)a.push(p);});return a;}
+    generateDraftClass=function(year){
+        const pool=draftPool07(),classSwing=gauss()*1.25,strongA=pick(['QB','WR','OT','DE','CB','LB']),strongB=pick(['RB','WR','DT','S','TE','CB']);let arr=pool.map(function(pos,i){
+            const slot=i<16?1:i<32?2:i<48?3:i<64?4:i<80?5:i<96?6:i<112?7:8,base={1:79,2:76,3:73,4:70.5,5:68.5,6:66.8,7:65.3,8:63.8}[slot],boost=pos===strongA?2.0:pos===strongB?1.15:0;
+            let trueOvr=clamp(Math.round(base+classSwing+boost+gauss()*3.0),59,89),potential=clamp(Math.max(trueOvr+rint(3,17),slot===1?rint(82,97):slot<=3?rint(76,94):slot<=5?rint(70,92):rint(66,89)),64,99),publicNoise=gauss()*2.4;
+            const special=['K','P'].includes(pos);let generationalSpecial=false;if(special){generationalSpecial=Math.random()<.035;trueOvr=clamp(generationalSpecial?rint(80,87):rint(67,78),62,88);potential=clamp(trueOvr+rint(3,10),70,94);publicNoise=generationalSpecial?-4:rint(-2,2);}
+            const o={id:`${year}-${i}-${rint(100,999)}`,name:pick(first)+' '+pick(last),pos:pos,trueOvr:trueOvr,potential:potential,attributes:makeAttributes(trueOvr,pos),age:rint(21,23),archetype:draftArchetype05(pos),story:pick(prospectStories),scoutBias:rint(-5,5),potBias:rint(-6,6),scoutLevel:0,drafted:false,draftedBy:null,pick:null,publicNoise:publicNoise,classStrength:classSwing,strongPositions:[strongA,strongB],careerArc:{longevity:clamp(.5+gauss()*.18,.05,.98),volatility:clamp(.5+gauss()*.20,.08,.98),lateBloom:clamp(.42+gauss()*.22,.02,.95),durability:clamp(.55+gauss()*.18,.08,.98)},generationalSpecial:generationalSpecial};return o;
+        });
+        arr.filter(function(p){return !['K','P'].includes(p.pos);}).sort(function(){return Math.random()-.5;}).slice(0,9).forEach(function(p){p.publicNoise-=rint(3,7);p.potential=clamp(p.potential+rint(2,5),66,99);});
+        arr.filter(function(p){return !['K','P'].includes(p.pos);}).sort(function(){return Math.random()-.5;}).slice(0,7).forEach(function(p){p.publicNoise+=rint(3,7);p.trueOvr=clamp(p.trueOvr-rint(1,4),59,89);p.attributes=makeAttributes(p.trueOvr,p.pos);});
+        arr.forEach(function(p){let c=Math.round(p.trueOvr*.65+p.potential*.29+p.publicNoise);if(['K','P'].includes(p.pos))c=p.generationalSpecial?clamp(c,70,79):clamp(c,55,66);p.consensus=clamp(c,54,99);});arr.sort(function(a,b){return b.consensus-a.consensus||b.potential-a.potential;});arr.forEach(function(p,i){p.boardRank=i+1;});return arr;
+    };
+    buildDraftOrder05=function(){const base=projectedOrder(),order=[];for(let round=1;round<=7;round++)base.forEach(function(team,i){order.push({pick:order.length+1,round:round,roundPick:i+1,team:team,original:team});});return order;};
+    projectedRound05=function(rank){return rank<=16?'Round 1':rank<=32?'Round 2':rank<=48?'Round 3':rank<=64?'Round 4':rank<=80?'Round 5':rank<=96?'Round 6':rank<=112?'Round 7':'Priority FA';};
+    rookieSalary05=function(round,roundPick){const base={1:6.2,2:2.7,3:1.45,4:1.05,5:.82,6:.70,7:.62}[round]||.58,slide=(16-roundPick)*(round===1?.20:round===2?.07:round===3?.025:.009);return +(base+Math.max(0,slide)).toFixed(1);};
+    const prospectCpuScore06For07=prospectCpuScore;
+    prospectCpuScore=function(p,abbr){let v=prospectCpuScore06For07(p,abbr),r=state.draftState?currentDraftRound05():Math.ceil((p.boardRank||1)/16);if(['K','P'].includes(p.pos)){if(r<=3)v-=45;else if(r===4)v-=p.generationalSpecial?6:30;else if(r===5)v-=p.generationalSpecial?0:17;else if(r===6)v-=4;}return v;};
+    openLiveDraft05=function(){if(state.draftState)return;if(!state.freeAgency||!state.freeAgency.complete){startFreeAgency06();switchTab('draft');renderDraft();return;}state.draftState={active:true,order:buildDraftOrder05(),pickIndex:0,picks:[],log:[],offer:null,declinedAt:null,complete:false};state.offseasonStage='draft';advanceOffseasonConstruction05('draftOpen');simulateCpuVeteranTrade();state.news.unshift(`The ${state.season+1} seven-round draft is open: 112 selections across 16 teams.`);renderAll();switchTab('draft');saveState();};
+    const selectProspect06For07=selectProspect;
+    selectProspect=function(p,abbr){selectProspect06For07(p,abbr);if(p&&p.drafted){const rp=abbr==='CCS'?state.roster.find(function(x){return x.name===p.name&&x.age===p.age;}):(state.leagueRosters[abbr]||[]).find(function(x){return x.name===p.name&&x.age===p.age;});if(rp&&p.careerArc)rp.careerArc=deepClone(p.careerArc);}const d=state.draftState;if(d&&d.complete){d.log[0]=`Seven rounds complete. ${state.draftClass.filter(function(x){return !x.drafted;}).length} prospects remain as priority free agents.`;state.news.unshift('The seven-round draft is complete.');}saveState();};
+
+    // Prospect scouting is available all season. Personnel quality improves one position; the facility governs quantity/clarity.
+    draftVisitAvailable=function(){return !state.draftState||!state.draftState.complete;};
+    const scoutProspect06For07=scoutProspect;
+    scoutProspect=function(id){const p=state.draftClass.find(function(x){return x.id===id;});if(!p)return;const before=p.scoutLevel||0;scoutProspect06For07(id);if(p.pos===state.chiefScout.specialty&&(p.scoutLevel||0)<3&&(p.scoutLevel||0)>before){p.scoutLevel=Math.min(3,p.scoutLevel+1);state.news.unshift(`${state.chiefScout.name}'s ${state.chiefScout.ability} accelerated the report on ${p.name}.`);renderAll();saveState();}};
+
+    // Home turns into a playoff hub instead of kicking the user to League after every click.
+    function miniMatch07(m){if(!m||!m.a)return '<div class="mini-match07 muted">TBD</div>';const score=m.result?` · ${m.result.as}-${m.result.bs}`:'';const winner=m.result?` · <b>${m.result.winner}</b>`:'';return `<div class="mini-match07">${m.a} vs ${m.b}${score}${winner}</div>`;}
+    function renderHomePlayoffs07(){const card=$('#home-playoff07');if(!card)return;const done=state.week>state.schedule.length;if(!done){card.style.display='none';return;}card.style.display='block';const p=state.playoffs;let body='',button='';if(!p){body='<div class="muted small">Regular season complete. Seed the top eight teams and start the postseason.</div>';button='<button type="button" class="btn primary" id="home-play07">Start Playoffs</button>';}else{const current=p.stage==='quarters'?p.quarters:p.stage==='semis'?p.semis:p.stage==='final'?[p.final]:[];body=`<div class="muted tiny">Current round: <b>${p.stage==='quarters'?'Quarterfinals':p.stage==='semis'?'Semifinals':p.stage==='final'?'Championship':'Complete'}</b></div><div class="mini-round07">${current.map(miniMatch07).join('')||`<div class="callout goodline"><b>Champion: ${p.champion}</b></div>`}</div>`;if(p.stage!=='complete')button=`<button type="button" class="btn primary" id="home-play07">${p.stage==='quarters'?'Sim Quarterfinals':p.stage==='semis'?'Sim Semifinals':'Sim Championship'}</button>`;else button='<button type="button" class="btn" id="home-play07-league">View Full Bracket</button>';}
+        card.querySelector('.home-playoff-body07').innerHTML=body;card.querySelector('.home-playoff-actions07').innerHTML=button;const b=$('#home-play07');if(b)b.addEventListener('click',function(){if(!state.playoffs)startPlayoffs();else advancePlayoffs();switchTab('home');renderAll();});const l=$('#home-play07-league');if(l)l.addEventListener('click',function(){switchTab('league');});
+    }
+    homePrimary06=function(){const p=currentPhase06();if(p.key==='season'){simulateGame('quick');return;}if(p.key==='playoffs'){if(!state.playoffs)startPlayoffs();else advancePlayoffs();switchTab('home');renderAll();saveState();return;}if(p.key==='development'){processOffseasonDevelopment05();renderAll();switchTab('development');saveState();return;}if(p.key==='fa'){if(!state.freeAgency||state.freeAgency.season!==state.season)startFreeAgency06();else switchTab('draft');return;}if(p.key==='combine'||p.key==='draft'){switchTab('draft');return;}if(p.key==='finish'){finishOffseason();return;}};
+    const currentPhase06For07=currentPhase06;
+    currentPhase06=function(){const p=currentPhase06For07();if(p.key==='draft'&&!state.draftState)p.action='Open 7-Round Draft';if(p.key==='draft'&&state.draftState&&!state.draftState.complete)p.title=`Draft Round ${currentDraftRound05()}`;return p;};
+
+    // Developer stress lab.
+    let bulkDev07=false;const saveState06For07=saveState;saveState=function(){if(!bulkDev07)saveState06For07();};
+    function autoDraft07(){if(!state.draftState)openLiveDraft05();let guard=180;while(state.draftState&&!state.draftState.complete&&guard--){const team=currentDraftTeam();if(team==='CCS'){const p=[...availableProspects()].sort(function(a,b){return prospectCpuScore(b,'CCS')-prospectCpuScore(a,'CCS');})[0];if(p)selectProspect(p,'CCS');else break;}else cpuDraftStep();}}
+    // Career endings are position-aware too. Retirement is probabilistic, with elite/longevity outliers able to hang on.
+    const retireFloor07={QB:36,RB:30,WR:33,TE:34,OT:35,G:35,C:35,DE:33,DT:34,LB:32,CB:31,S:32,K:37,P:37};
+    const retireHard07={QB:42,RB:35,WR:38,TE:39,OT:40,G:40,C:40,DE:38,DT:39,LB:37,CB:36,S:37,K:44,P:44};
+    function retireChance07(p){const floor=retireFloor07[p.pos]||34,hard=retireHard07[p.pos]||39;if(p.age<floor)return 0;const arc=arc07(p),span=Math.max(1,hard-floor),t=clamp((p.age-floor)/span,0,1.4);let c=.025+t*t*.56;if(p.age>=hard)c=Math.max(c,.78+(p.age-hard)*.07);if(p.ovr<70)c+=.20;else if(p.ovr<75)c+=.09;else if(p.ovr>=88)c-=.12;else if(p.ovr>=83)c-=.05;const perf=recentPerf07(p);if(perf.strong>=1)c-=.05;if(perf.poor>=2)c+=.08;c+=(0.5-arc.longevity)*.24+(0.5-arc.durability)*.08;return clamp(c,0,.97);}
+    function retirePlayers07(){state.transactionHistory=state.transactionHistory||[];const groups=[['CCS',state.roster]].concat(Object.keys(state.leagueRosters||{}).map(function(a){return [a,state.leagueRosters[a]];}));groups.forEach(function(g){const abbr=g[0],rs=g[1],ret=[];rs.forEach(function(p){if(Math.random()<retireChance07(p))ret.push(p);});ret.forEach(function(p){const idx=rs.findIndex(function(x){return x.id===p.id;});if(idx>=0)rs.splice(idx,1);const line=`${p.name} (${abbr}) retired at age ${p.age} after a ${p.ovr} OVR season.`;state.transactionHistory.unshift({season:state.season,type:'RETIRE',text:line});state.news.unshift(line);});});}
+    const startFreeAgency06Base07=startFreeAgency06;
+    startFreeAgency06=function(){if(!state.freeAgency||state.freeAgency.season!==state.season)retirePlayers07();return startFreeAgency06Base07();};
+    function rosterKeep07(p){const curve=aging07[p.pos]||aging07.WR,ageTax=Math.max(0,p.age-curve.soft)*1.35,upside=Math.max(0,(p.potential||p.ovr)-p.ovr)*.22;return p.ovr+upside-ageTax+(p.age<=24?1.2:0);}
+    trimCpuRosters06=function(){Object.entries(state.leagueRosters||{}).forEach(function(entry){const abbr=entry[0],rs=entry[1];rs.sort(function(a,b){return rosterKeep07(b)-rosterKeep07(a);});while(rs.length>55){const p=rs.pop();state.transactionHistory.unshift({season:state.season,type:'CUT',text:`${abbr} released ${p.name} (${p.pos}, ${p.ovr} OVR) after the draft.`});}});};
+    function trimStressUser07(){state.roster.sort(function(a,b){return rosterKeep07(b)-rosterKeep07(a);});while(state.roster.length>55){const p=state.roster.pop();state.transactionHistory.unshift({season:state.season,type:'CUT',text:`CCS stress-test roster cut: ${p.name} (${p.pos}, ${p.ovr} OVR).`});}}
+    function fullSeason07(){while(currentOpp())simulateGame('fast');if(!state.playoffs)startPlayoffs();while(state.playoffs&&state.playoffs.stage!=='complete')advancePlayoffs();processOffseasonDevelopment05();if(!state.freeAgency||state.freeAgency.season!==state.season)startFreeAgency06();let fg=5;while(state.freeAgency&&!state.freeAgency.complete&&fg--)cpuFreeAgencyPass06();state.combineComplete=true;autoDraft07();if(state.draftState&&state.draftState.complete){finishOffseason();trimStressUser07();}}
+    function stress07(n){const before=state.season,starts=allLeaguePlayers().map(function(p){return p.ovr;}),cash=state.cash;bulkDev07=true;try{for(let i=0;i<n;i++)fullSeason07();}finally{bulkDev07=false;}const players=allLeaguePlayers(),byPos={};players.forEach(function(p){if(!byPos[p.pos])byPos[p.pos]=[];byPos[p.pos].push(p);});state.devStressReport={from:before,to:state.season,seasons:state.season-before,players:players.length,avgOvr:+avg(players.map(function(p){return p.ovr;})).toFixed(1),avgAge:+avg(players.map(function(p){return p.age;})).toFixed(1),userAvgOvr:+avg(state.roster.map(function(p){return p.ovr;})).toFixed(1),userAvgAge:+avg(state.roster.map(function(p){return p.age;})).toFixed(1),cash:+state.cash.toFixed(1),facilities:Object.assign({},state.facilities),pos:Object.keys(byPos).sort().map(function(k){return {pos:k,n:byPos[k].length,ovr:+avg(byPos[k].map(function(p){return p.ovr;})).toFixed(1),age:+avg(byPos[k].map(function(p){return p.age;})).toFixed(1)};})};state.news.unshift(`Testing Lab simulated ${state.season-before} full season(s) from ${before}.`);renderAll();saveState06For07();}
+    function renderDevLab07(){const box=$('#devlab-body07');if(!box)return;const on=!!state.devMode;box.innerHTML=`<div class="switchrow"><div><b>Developer / Stress Test Mode</b><div class="muted small">Beta-only tools. Changes this save. Use a separate franchise if you want a clean playthrough.</div></div><input id="devmode07" type="checkbox" ${on?'checked':''}></div>${on?`<div class="development-tools07"><div><label>Development volatility</label><select id="devvol07"><option value="0.75">0.75×</option><option value="1">1.00×</option><option value="1.25">1.25×</option><option value="1.5">1.50×</option></select></div><div><label>Cash</label><div class="pill">${money(state.cash)}</div></div><div><label>Facilities</label><div class="pill">${Object.values(state.facilities).join(' / ')}</div></div><div><label>Season</label><div class="pill">${state.season}</div></div></div><div class="lab-grid07"><button type="button" class="btn" data-dev07act="cash">+$100M Cash</button><button type="button" class="btn" data-dev07act="fac1">All Facilities L1</button><button type="button" class="btn" data-dev07act="fac5">All Facilities L5</button><button type="button" class="btn" data-dev07act="post">Sim to Postseason</button><button type="button" class="btn warn" data-dev07act="one">Sim 1 Full Season</button><button type="button" class="btn warn" data-dev07act="ten">Sim 10 Full Seasons</button></div><div id="stress-report07"></div>`:''}`;
+        const tog=$('#devmode07');if(tog)tog.addEventListener('change',function(){state.devMode=tog.checked;renderDevLab07();saveState();});if(on){const sel=$('#devvol07');sel.value=String(state.devVolatility||1);sel.addEventListener('change',function(){state.devVolatility=Number(sel.value)||1;saveState();});$$('[data-dev07act]').forEach(function(b){b.addEventListener('click',function(){const a=b.dataset.dev07act;if(a==='cash')state.cash+=100;if(a==='fac1'){Object.keys(state.facilities).forEach(function(k){state.facilities[k]=1;});state.project=null;}if(a==='fac5'){Object.keys(state.facilities).forEach(function(k){state.facilities[k]=5;});state.project=null;}if(a==='post')fastSimSeason06();if(a==='one')stress07(1);if(a==='ten')stress07(10);renderAll();saveState();});});if(state.devStressReport){const r=state.devStressReport;$('#stress-report07').innerHTML=`<div class="stress-report07"><b>Last stress report · ${r.from} → ${r.to}</b><div class="muted small">${r.seasons} seasons · ${r.players} players · League avg OVR ${r.avgOvr} · Avg age ${r.avgAge} · Cash ${money(r.cash)}</div><div class="muted tiny" style="margin-top:6px">Your roster: ${r.userAvgOvr} OVR / ${r.userAvgAge} age · Facility levels: ${Object.values(r.facilities).join(' / ')}</div><div class="muted tiny" style="margin-top:6px">${r.pos.map(function(x){return `${x.pos}: ${x.ovr} OVR / ${x.age} age`;}).join(' · ')}</div></div>`;}}
+    }
+
+    function renderScheme07(){
+        const note=$('#scheme-explain07');if(note){const o=offSchemes07[state.offPlan||'balanced'],d=defSchemes07[state.defPlan||'balanced'];note.innerHTML=`<div class="scheme-grid07"><div class="scheme-card07 active"><b>Offense · ${o.name}</b><div class="muted small">${o.desc}</div><div class="muted tiny" style="margin-top:5px">Ideal: ${o.ideal} · Current fit: ${teamFit07('CCS','off',state.offPlan||'balanced')}/99</div></div><div class="scheme-card07 active"><b>Defense · ${d.name}</b><div class="muted small">${d.desc}</div><div class="muted tiny" style="margin-top:5px">Matchups are nudges, not automatic wins. Elite players and coaching can blunt a scheme disadvantage.</div></div></div>`;}
+        const opp=currentOpp(),m=$('#scheme-matchup07');if(m&&opp){const oe=schemeMatch07(state.offPlan||'balanced',opp.defScheme||'balanced'),de=-schemeMatch07(opp.offScheme||'balanced',state.defPlan||'balanced');m.innerHTML=`<div class="callout"><b>Scheme matchup preview</b><div class="muted small">Your ${styleLabel07(state.offPlan)} vs ${defSchemes07[opp.defScheme||'balanced'].name}: ${oe>0?'+':''}${oe.toFixed(1)} concept edge. Your ${defSchemes07[state.defPlan||'balanced'].name} vs ${offSchemes07[opp.offScheme||'balanced'].name}: ${de>0?'+':''}${de.toFixed(1)} defensive edge. Talent, scouting and coaching still decide most of the result.</div></div>`;} else if(m)m.innerHTML='';
+    }
+    const renderPlayerDialog06For07=renderPlayerDialog;
+    renderPlayerDialog=function(){renderPlayerDialog06For07();const p=selectedPlayerObject();if(!p)return;const body=$('#dialog-player-body');if(!body)return;if(state.playerTab==='season'){const scheme=state.offPlan||'balanced';if(p.group==='OFF')body.insertAdjacentHTML('beforeend',`<div class="progress-note"><b>Scheme fit · ${offSchemes07[scheme].name}</b><div class="muted small">${schemeFit07(p,scheme)}/99 fit. Overall rating is not the whole story; attributes determine how cleanly a player fits the current identity.</div></div>`);}if(state.playerTab==='development'){
+        const last=(p.attrDevelopment||[]).slice(-1)[0];if(last){body.insertAdjacentHTML('beforeend',`<div class="progress-note"><b>Last offseason attribute movement</b><div class="muted tiny" style="margin-top:4px">${(last.reasons||[]).join(' · ')}</div><div style="margin-top:7px">${(last.changes||[]).map(function(x){return `<div class="attr-delta07"><span>${x.label}</span><span>${x.old} → ${x.new}</span><b class="${x.delta>0?'good':'badtext'}">${x.delta>0?'+':''}${x.delta}</b></div>`;}).join('')||'<div class="muted small">No attribute changed.</div>'}</div><div class="muted tiny" style="margin-top:7px">Model signals · age ${last.parts.age} · performance ${last.parts.performance} · potential ${last.parts.potential} · facilities ${last.parts.facilities} · coaching ${last.parts.coach} · variance ${last.parts.variance}</div></div>`);}
+    }};
+
+    function inject07(){
+        const homeGrid=$('[data-panel="home"] .grid');if(homeGrid&&!$('#home-playoff07'))homeGrid.insertAdjacentHTML('beforeend','<div class="card span-12 playoff-home07" id="home-playoff07" style="display:none"><div class="meterrow"><div><h2>Postseason Hub</h2><div class="muted small">During the playoffs, simulate the next round here without being kicked to another screen.</div></div><span class="pill">Playoffs</span></div><div class="home-playoff-body07" style="margin-top:8px"></div><div class="actions home-playoff-actions07"></div></div>');
+        const gd=$('[data-panel="gameday"] .grid');if(gd&&!$('#scheme-explain07'))gd.insertAdjacentHTML('beforeend','<div class="card span-12"><div class="meterrow"><div><h2>Scheme Identity</h2><div class="muted small">Matchups create edges, not rock-paper-scissors auto wins. Elite personnel and coaching can overpower a bad schematic draw.</div></div><span class="pill">0.7.1</span></div><div id="scheme-explain07" style="margin-top:10px"></div><div id="scheme-matchup07"></div></div>');
+        const mg=$('[data-panel="management"] .grid');if(mg&&!$('#devlab07'))mg.insertAdjacentHTML('beforeend','<div class="card span-12 devlab07" id="devlab07"><h2>Beta Testing Lab</h2><div id="devlab-body07"></div></div><div class="card span-12"><h2>Chief Scout</h2><div class="coach"><div class="portrait">JP</div><div><b>Jordan Pike</b><div class="muted small">Chief Scout · Specialty: QB</div></div></div><div class="ability"><b>Ability · Quarterback Guru</b><div class="muted tiny">One focused visit on a quarterback reveals an extra layer of the report. The Scouting Department facility controls how many opportunities and how much baseline information you have; the scout controls quality at a specialty.</div></div></div>');
+        const tools=$('.development-tools');if(tools&&!$('#development-scope07'))tools.insertAdjacentHTML('afterend','<div class="development-tools07"><div><label>League scope</label><select id="development-scope07"><option value="LEAGUE">Whole League</option><option value="CCS">My Team</option></select></div><div><label>Position</label><select id="development-pos07"><option value="ALL">All Positions</option>'+['QB','RB','WR','TE','OT','G','C','DE','DT','LB','CB','S','K','P'].map(function(p){return `<option>${p}</option>`;}).join('')+'</select></div><div><label>Model</label><div class="pill" style="min-height:44px;display:flex;align-items:center">Position + performance + history</div></div><div><label>Facilities</label><div class="pill" style="min-height:44px;display:flex;align-items:center">Modifier, never override</div></div></div>');
+        [['roster','Roster'],['league-rosters','League Rosters'],['scouting','Scouting'],['facilities','Facilities'],['development','Development'],['league','League']].forEach(function(x){const panel=$(`[data-panel="${x[0]}"]`);if(panel&&!panel.querySelector('.sim-strip07'))panel.insertAdjacentHTML('afterbegin',`<div class="sim-strip07"><span class="pill">Stay here</span><button type="button" class="btn" data-simhere07="${x[0]}">Sim Week</button></div>`);});
+        const navLeague=$('[data-tab="league"]');if(navLeague&&navLeague.textContent.indexOf('Standings')<0)navLeague.textContent='🏆 League / Standings';
+    }
+    inject07();
+    const ds07=$('#development-scope07'),dp07=$('#development-pos07');if(ds07){ds07.value=state.developmentScope||'LEAGUE';ds07.addEventListener('change',function(){state.developmentScope=ds07.value;renderDevelopment05();saveState();});}if(dp07){dp07.value=state.developmentPos07||'ALL';dp07.addEventListener('change',function(){state.developmentPos07=dp07.value;renderDevelopment05();saveState();});}
+    $$('[data-simhere07]').forEach(function(b){b.addEventListener('click',function(){if(currentOpp()){const tab=b.dataset.simhere07;simulateGame('fast');switchTab(tab);renderAll();}else{state.news.unshift('There is no regular-season game left to simulate from this screen.');renderAll();}});});
+    const off07=$('#off-plan'),def07=$('#def-plan');if(off07)off07.addEventListener('change',function(){state.offPlan=off07.value;renderScheme07();saveState();});if(def07)def07.addEventListener('change',function(){state.defPlan=def07.value;renderScheme07();saveState();});
+
+    const renderDraft06For07=renderDraft;
+    renderDraft=function(){renderDraft06For07();const h=$('#draft-board')&&$('#draft-board').closest('.card').querySelector('h2');if(h)h.textContent='Big Board · 124 Prospects';const status=$('#draft-status');if(status)status.textContent=status.textContent.replace(/five-round/gi,'seven-round').replace(/5-Round/g,'7-Round').replace(/Five rounds/g,'Seven rounds').replace(/88 prospects/g,'124 prospects');const open=$('#open-live-draft');if(open)open.textContent='Open 7-Round Draft';const disabled=$('#draft-controls .btn:disabled');if(disabled)disabled.textContent=disabled.textContent.replace(/Five-round/gi,'Seven-round').replace(/5-Round/g,'7-Round');const tools=$('#draft-scouting-tools'),tiny=tools&&tools.querySelector('.muted.tiny');if(tiny)tiny.textContent=tiny.textContent.replace(/Visits unlock in Week 6/g,'Visits available all season').replace(/Visits unlocked/g,'Visits available all season'); };
+    const renderHome06For07=renderHome;
+    renderHome=function(){renderHome06For07();renderHomePlayoffs07();};
+    const renderManagement06For07=renderManagement;
+    renderManagement=function(){renderManagement06For07();renderDevLab07();};
+    const renderGamePlanNote06For07=renderGamePlanNote;
+    renderGamePlanNote=function(){renderGamePlanNote06For07();renderScheme07();};
+    const renderNavStatus06For07=renderNavStatus06;
+    renderNavStatus06=function(){renderNavStatus06For07();const p=currentPhase06();const map={season:'gameday',playoffs:'league',development:'development',fa:'draft',combine:'draft',draft:'draft',finish:'draft'},b=$(`[data-tab="${map[p.key]}"]`);if(b&&!b.querySelector('.nav-phase07'))b.insertAdjacentHTML('beforeend',`<span class="nav-phase07">${p.action}</span>`);};
+    const renderAll06For07=renderAll;
+    renderAll=function(){if(bulkDev07)return;renderAll06For07();renderHomePlayoffs07();renderScheme07();renderDevLab07();renderNavStatus06();const s=$('#development-scope07'),p=$('#development-pos07');if(s)s.value=state.developmentScope||'LEAGUE';if(p)p.value=state.developmentPos07||'ALL';saveState();};
+    // New season draft classes and fresh scouting opportunities stay seven-round.
+    const finishOffseason06For07=finishOffseason;
+    finishOffseason=function(){const prev=state.season;finishOffseason06For07();if(state.season!==prev){state.draftClass=generateDraftClass(state.season+1);state.draftScoutVisits=Math.max(6,5+(state.facilities.scouting||1));state.combineComplete=false;state.weeklyProspectScout07=0;state.news.unshift(`Beta 0.7 begins Season ${state.season} with a fresh 124-player, seven-round draft class.`);}renderAll();saveState();};
+    // One initial migration class reset only if the old draft has not begun.
+    if(!state.draftState && (!state.draftClass || state.draftClass.length<112)){state.draftClass=generateDraftClass(state.season+1);state.draftScoutVisits=Math.max(6,5+(state.facilities.scouting||1));state.news.unshift('0.7 migration: undrafted class expanded to 124 prospects for seven-round testing.');}
+
+    /* ===== Beta 0.7.2: navigation stability + tabbed box scores ===== */
+    const NAV071={home:'🏠 Home',gameday:'🏈 Game Day',roster:'👥 My Roster','league-rosters':'🌐 League Rosters',development:'📈 Development',scouting:'🔎 Scouting',draft:'📋 Draft & Trades',facilities:'🏗️ Facilities',finances:'💵 Financials',management:'⚙️ Management',league:'🏆 League / Standings'};
+    function navStatus071(){
+        const p=currentPhase06(),map={season:'gameday',playoffs:'league',development:'development',fa:'draft',combine:'draft',draft:'draft',finish:'draft'},target=map[p.key];
+        $$('[data-tab]').forEach(function(b){
+            const key=b.getAttribute('data-tab'),label=NAV071[key]||b.getAttribute('data-nav071')||b.textContent.trim();
+            b.setAttribute('data-nav071',label);
+            while(b.firstChild)b.removeChild(b.firstChild);
+            b.appendChild(document.createTextNode(label));
+            if(key===target){const s=document.createElement('span');s.className='nav-phase071';s.textContent=p.action;b.appendChild(s);}
+        });
+    }
+    // 0.7 inherited a renderer that flattened nested phase spans into text before
+    // re-appending them. Every render therefore duplicated “Quick Sim Week”.
+    renderNavStatus06=navStatus071;
+
+    function totals071(lines){
+        const t={pass:0,rush:0,turnovers:0};
+        (lines||[]).forEach(function(x){const s=x.stats||{};t.pass+=Number(s.passYds)||0;t.rush+=Number(s.rushYds)||0;t.turnovers+=Number(s.passInt)||0;});
+        return t;
+    }
+    function teamSummary071(name,score,lines){const t=totals071(lines);return `<div class="box-team071"><div class="meterrow"><div><b>${name}</b><div class="muted tiny">Team snapshot</div></div><div class="score071">${score}</div></div><div class="box-kpis071"><div><span>Pass</span><b>${Math.round(t.pass)} YD</b></div><div><span>Rush</span><b>${Math.round(t.rush)} YD</b></div><div><span>Turnovers</span><b>${Math.round(t.turnovers)}</b></div></div></div>`;}
+    function category071(g,type,title){return `<div class="boxgrid"><div class="boxsection"><h3>Sentinels ${title}</h3>${boxRows06(g.userLines||[],type)}</div><div class="boxsection"><h3>${g.oppAbbr} ${title}</h3>${boxRows06(g.oppLines||[],type)}</div></div>`;}
+    storedBoxMarkup06=function(g){
+        if(!g)return '<div class="muted">No stored box score yet.</div>';
+        const potg=g.playerOfGame,key=String(g.id||`wk-${g.week}-${g.oppAbbr}`).replace(/[^a-zA-Z0-9_-]/g,'');
+        return `<div class="phasecard boxscore071" data-box071="${key}"><div class="meterrow"><div><b>Week ${g.week} · ${g.home?'vs':'@'} ${g.oppName}</b><div class="muted small">CCS ${g.us} — ${g.them} ${g.oppAbbr}</div></div><span class="pill ${g.win?'good':''}">${g.win?'WIN':'LOSS'}</span></div>${potg?`<div class="callout goodline"><b>Player of the Game · ${potg.name} (${potg.team})</b></div>`:''}<div class="box-tabs071" role="tablist" aria-label="Box score categories"><button type="button" class="active" data-boxcat071="summary">Summary</button><button type="button" data-boxcat071="pass">Passing</button><button type="button" data-boxcat071="rush">Rushing</button><button type="button" data-boxcat071="rec">Receiving</button><button type="button" data-boxcat071="def">Defense</button></div><div class="box-panel071" data-boxpanel071="summary"><div class="box-summary071">${teamSummary071('Capital City Sentinels',g.us,g.userLines)}${teamSummary071(g.oppAbbr,g.them,g.oppLines)}</div></div><div class="box-panel071" data-boxpanel071="pass" hidden>${category071(g,'pass','Passing')}</div><div class="box-panel071" data-boxpanel071="rush" hidden>${category071(g,'rush','Rushing')}</div><div class="box-panel071" data-boxpanel071="rec" hidden>${category071(g,'rec','Receiving')}</div><div class="box-panel071" data-boxpanel071="def" hidden>${category071(g,'def','Defense')}</div></div>`;
+    };
+    document.addEventListener('click',function(ev){
+        const b=ev.target&&ev.target.closest?ev.target.closest('[data-boxcat071]'):null;if(!b)return;
+        const root=b.closest('.boxscore071');if(!root)return;const cat=b.getAttribute('data-boxcat071');
+        root.querySelectorAll('[data-boxcat071]').forEach(function(x){x.classList.toggle('active',x===b);});
+        root.querySelectorAll('[data-boxpanel071]').forEach(function(p){p.hidden=p.getAttribute('data-boxpanel071')!==cat;});
+    });
+
+    renderAll();
 })();
 
 
 
 (function(){
   'use strict';
-  var SEEN_KEY='gridiron_dynasty_tutorial_0_6_2_seen';
+  var SEEN_KEY='gridiron_dynasty_tutorial_0_7_seen';
   var dialog=document.getElementById('tutorial-dialog');
   if(!dialog)return;
   var kicker=document.getElementById('tutorial-kicker');
@@ -2777,7 +3145,7 @@
       kicker:'Build the Team',
       title:'Roster, scouting, trades and the draft',
       copy:'Personnel decisions are the heart of the franchise loop. Ratings matter, but age, potential, attributes, scouting information and team direction matter too.',
-      points:['Scouting gives you better information instead of perfect knowledge.','Draft classes contain 88 prospects across five rounds, with room for steals, reaches and misses.','League Rosters can help you spot trade targets, including older veterans who may still have one strong year left.']
+      points:['Scouting gives you better information instead of perfect knowledge.','Draft classes contain 124 prospects across seven rounds, with room for steals, reaches, late-round gems and misses.','League Rosters can help you spot trade targets, including older veterans who may still have one strong year left.']
     },
     {
       kicker:'Build the Organization',
@@ -2788,8 +3156,8 @@
     {
       kicker:'The Franchise Loop',
       title:'Play seasons, then live with your decisions',
-      copy:'The current loop is regular season → playoffs → development/regression → free agency → combine/scouting → five-round draft → next season. That loop is the foundation we will keep deepening.',
-      points:['You can replay this tutorial at any time from the hamburger menu under Play.','Beta 0.6.2 is still a test build, so some deeper systems are intentionally coming later.','The destination is a football universe with schemes, smarter coaches, richer game simulation, league records, generational players and memorable multi-decade history.']
+      copy:'The current loop is regular season → playoffs → league-wide development/regression → free agency → combine/scouting → seven-round draft → next season. That loop is the foundation we will keep deepening.',
+      points:['You can replay this tutorial at any time from the hamburger menu under Play.','Beta 0.7 is still a test build. The Testing Lab exists so progression, facilities, schemes and long saves can be stress-tested instead of guessed at.','The destination is a football universe with schemes, smarter coaches, richer game simulation, league records, generational players and memorable multi-decade history.']
     }
   ];
   function esc(s){return String(s).replace(/[&<>\"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}

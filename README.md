@@ -1,18 +1,12 @@
-# Gridiron Dynasty Beta 0.6.2
+# Gridiron Dynasty Beta 0.7.2
 
-Beta 0.6.2 is a focused onboarding release built on Beta 0.6.1.
+Patch release for the Beta 0.7 branch.
 
-## What changed
-
-- First-run six-step tutorial.
-- Clear explanation of what Gridiron Dynasty is trying to become: a long-term fictional pro-football franchise simulator and living league.
-- Tutorial covers Home, Game Day, rosters, league rosters, scouting, trades, draft, free agency, finances, facilities, management, and the season/offseason loop.
-- Tutorial can be replayed from **hamburger menu → Play → Tutorial / How to Play**.
-- Keeps the Beta 0.6 save key so Beta 0.6/0.6.1 franchises continue rather than intentionally starting over.
-- Retains the 0.6.1 iPhone Safari / Android Chrome compatibility work.
+## Fixes
+- Progression/regression Change values now always equal the displayed new OVR minus old OVR.
+- Existing saved development reports are normalized on load so stale +3/-3 values are repaired when the ratings show a larger move.
+- Preserves the Beta 0.7.1 navigation stability and tabbed box scores.
+- Uses the same Beta 0.7 save family so existing franchises carry forward.
 
 ## GitHub Pages
-
-Deploy from the root of the `main` branch using **Settings → Pages → Deploy from a branch → main / (root)**.
-
-The game entry point is `index.html`.
+Publish from `main` / `(root)` with `index.html` and `.nojekyll` at repository root.
