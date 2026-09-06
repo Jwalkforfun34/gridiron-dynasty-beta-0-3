@@ -1,17 +1,16 @@
-# Gridiron Dynasty Beta 0.8.8
+# Gridiron Dynasty Beta 0.8.8.2
 
-## Presentation, Access & League Memory
+Legacy UI cleanup hotfix.
 
-Beta 0.8.8 builds on the 0.8.7.1 long-save realism baseline and focuses on making players and league history easier to understand, revisit, and care about.
+This build preserves Beta 0.8.8 league memory, Career Look, combine rankings, draft favorites, and Beta 0.8.7.1 progression while cleaning inherited UI wiring that could call older renderers.
 
-### Highlights
-- Retired-player Legacy Archive with preserved season history, career totals, teams, championships, ratings, and Career Look snapshots.
-- Record Book and Team Leaders now open player cards instead of becoming dead ends.
-- Career Look appears on Player Overview and only shows appearances that have actually happened; future slots reveal no future ages or looks.
-- Combine results now include drill ranking within each prospect's position group.
-- Draft Favorites / shortlist with a Favorites-only board filter.
-- Retired-history retention setting: Keep all (default), 50 years, or 20 years.
-- Historical modal reliability fixes and additional mobile presentation polish.
-- 320–1100px visual regression pass with no page-width overflow in tested primary screens.
+Key fixes:
+- Old event handlers now resolve the current renderer instead of capturing pre-redesign functions.
+- Roster Position / Group, sort, and direction keep the modern mobile card presentation.
+- League Roster trade targets now open the dedicated Trades screen instead of the old Draft workflow.
+- Quick UI Tour no longer duplicates its overlay on repeated renders.
+- Procedural portrait SVG IDs are unique when the same player appears more than once on screen.
+- League Roster rows now use the modern procedural portraits instead of the legacy silhouette.
+- Hidden hamburger/drawer compatibility shell remains non-player-facing for inherited code compatibility.
 
-The league, teams, players and branding are fictional.
+GitHub Pages entry point: `index.html`.
