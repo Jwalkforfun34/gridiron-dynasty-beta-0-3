@@ -1,16 +1,16 @@
-# Gridiron Dynasty Beta 0.8.8.2
+# Gridiron Dynasty Beta 0.8.9
 
-Legacy UI cleanup hotfix.
+Game Day & Season Storytelling update.
 
-This build preserves Beta 0.8.8 league memory, Career Look, combine rankings, draft favorites, and Beta 0.8.7.1 progression while cleaning inherited UI wiring that could call older renderers.
-
-Key fixes:
-- Old event handlers now resolve the current renderer instead of capturing pre-redesign functions.
-- Roster Position / Group, sort, and direction keep the modern mobile card presentation.
-- League Roster trade targets now open the dedicated Trades screen instead of the old Draft workflow.
-- Quick UI Tour no longer duplicates its overlay on repeated renders.
-- Procedural portrait SVG IDs are unique when the same player appears more than once on screen.
-- League Roster rows now use the modern procedural portraits instead of the legacy silhouette.
-- Hidden hamburger/drawer compatibility shell remains non-player-facing for inherited code compatibility.
+## Highlights
+- Season Sim presentation: watch the regular season unfold week by week.
+- Pause / Resume and Finish Now controls.
+- Final score, running record, Player of the Game and story beat for every simulated week.
+- Persistent scoring-event ledger stored with each new box score.
+- Box Score Summary now includes How It Happened, Turning Point and scoring chronology.
+- Modernized Game Day matchup header.
+- Home now exposes Sim Season as a normal player-facing action.
+- Preserves Beta 0.8.8.2 legacy-UI cleanup and Beta 0.8.7.1 progression tuning.
 
 GitHub Pages entry point: `index.html`.
+Publish from `main / (root)` with `.nojekyll` at the repository root.
