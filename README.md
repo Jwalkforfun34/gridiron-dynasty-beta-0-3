@@ -1,12 +1,17 @@
-# Gridiron Dynasty Beta 0.7.2
+# Gridiron Dynasty Beta 0.8.8
 
-Patch release for the Beta 0.7 branch.
+## Presentation, Access & League Memory
 
-## Fixes
-- Progression/regression Change values now always equal the displayed new OVR minus old OVR.
-- Existing saved development reports are normalized on load so stale +3/-3 values are repaired when the ratings show a larger move.
-- Preserves the Beta 0.7.1 navigation stability and tabbed box scores.
-- Uses the same Beta 0.7 save family so existing franchises carry forward.
+Beta 0.8.8 builds on the 0.8.7.1 long-save realism baseline and focuses on making players and league history easier to understand, revisit, and care about.
 
-## GitHub Pages
-Publish from `main` / `(root)` with `index.html` and `.nojekyll` at repository root.
+### Highlights
+- Retired-player Legacy Archive with preserved season history, career totals, teams, championships, ratings, and Career Look snapshots.
+- Record Book and Team Leaders now open player cards instead of becoming dead ends.
+- Career Look appears on Player Overview and only shows appearances that have actually happened; future slots reveal no future ages or looks.
+- Combine results now include drill ranking within each prospect's position group.
+- Draft Favorites / shortlist with a Favorites-only board filter.
+- Retired-history retention setting: Keep all (default), 50 years, or 20 years.
+- Historical modal reliability fixes and additional mobile presentation polish.
+- 320–1100px visual regression pass with no page-width overflow in tested primary screens.
+
+The league, teams, players and branding are fictional.
